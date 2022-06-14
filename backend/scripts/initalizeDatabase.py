@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import psycopg2
 from psycopg2.errors import DuplicateTable, DuplicateSchema, DuplicateObject
+from yaspin import yaspin
 
 def starsTables(sizes=('4px', )):
     allQueries = []
@@ -27,8 +28,8 @@ def databaseSetup(curs):
             ###   to web_anon
             "alter default privileges in schema api grant select on tables to web_anon",
             "alter default privileges in schema api grant select on sequences to web_anon",
-            "create role authenticator noinherit login password 'mysecretpassword'";
-            "grant web_anon to authenticator";
+            "create role authenticator noinherit login password 'mysecretpassword'",
+            "grant web_anon to authenticator"
         ]
 
     success = False
@@ -58,7 +59,8 @@ def main():
     conn = psycopg2.connect("postgres://postgres:mysecretpassword@localhost:5433")
     with conn:
         with conn.cursor() as curs:
-            databaseSetup(curs)
+            with yaspin(text=f"initializing database") as spinner:
+                databaseSetup(curs)
     conn.close()
 
 if __name__ == "__main__":
