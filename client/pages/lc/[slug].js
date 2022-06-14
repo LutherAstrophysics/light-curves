@@ -12,7 +12,8 @@ export default function LightCurve() {
     const [firstStar, setFirstStar] = useState("");
     const [secondStar, setSecondStar] = useState("");
     useEffect(() => {
-        const slug = router?.query?.slug;
+        const slug = router.query?.slug;
+        console.log("hhere in sueeffect", router)
         if (slug) {
             if (!isNaN(parseInt(slug))) {
                 setFirstStar(parseInt(slug));
@@ -50,3 +51,23 @@ const SecondStar = ({ firstStar, star, setStar }) => {
         </div>
     );
 };
+
+export async function getStaticProps({ params: { slug } }) {
+  return {
+    props: {
+        data: ""
+    },
+  }
+}
+
+
+export async function getStaticPaths() {
+   const allStars = Array(2510).fill(undefined).map((_, i) => ({slug: (i + 1).toString()}))
+  return {
+    paths: [...allStars].map((x) => ({
+      params: { slug: x.slug },
+    })),
+    fallback: false,
+  }
+}
+

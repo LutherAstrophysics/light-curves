@@ -3,23 +3,25 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { myDateFormatString } from "utils";
 import { withData } from "hoc";
-import { useStarData } from "hooks";
+import {useStarData} from "hooks"
 import {
-    ScatterChart,
-    Scatter,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Cell,
-    ResponsiveContainer,
-} from "recharts";
+  Chart as ChartJS,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import {Scatter} from 'react-chartjs-2'
+
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 export const BuildLC = ({ number }) => {
     const [from, setFrom] = useState(
         myDateFormatString(new Date("2003-01-02"))
     );
     const [to, setTo] = useState(myDateFormatString(new Date()));
+    console.log('starnumber', number);
     const [starData, starDataError] = useStarData(number);
     function handleFrom(e) {
         setFrom(e.target.value);
@@ -58,43 +60,32 @@ export const BuildLC = ({ number }) => {
     );
 };
 
-function Curve({ data: foo }) {
-    // const dataSortedByDate =
-    //
-    const data = [
-        { x: 100, y: 200, z: 200 },
-        { x: 120, y: 100, z: 260 },
-        { x: 170, y: 300, z: 400 },
-        { x: 140, y: 250, z: 280 },
-        { x: 150, y: 400, z: 500 },
-        { x: 110, y: 280, z: 200 },
-    ];
+function Curve({ data: rawData }) {
+    console.log("rawdata", rawData);
+    const options = {
+        scales: {
+            x: {
+                beginsAtZero: false
+            },
+            y: {
+                beginsAtZero: false
+            }
+        }
+    }
+    const data = {
+        datasets: [
+            {
+                label: 'lc',
+                data:  rawData.map(point => ({x: new Date(point.date).getTime(), y: point.flux}))
+            }
+        ]
+    }
+
 
     return (
         <div>
-            <p>foo bar</p>
-            <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart
-                    width={400}
-                    height={400}
-                    margin={{
-                        top: 20,
-                        right: 20,
-                        bottom: 20,
-                        left: 20,
-                    }}
-                >
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="stature" unit="cm" />
-                    <YAxis type="number" dataKey="y" name="weight" unit="kg" />
-                    <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-                    <Scatter name="A school" data={data} fill="#8884d8">
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={"red"} />
-                        ))}
-                    </Scatter>
-                </ScatterChart>
-            </ResponsiveContainer>
+            <Scatter options={options} data={data} />
+            <p>foo bar {JSON.stringify(rawData, null, 2)}</p>
         </div>
     );
 }
