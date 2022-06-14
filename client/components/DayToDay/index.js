@@ -27,7 +27,7 @@ export default function DayToDay() {
     );
 }
 
-export function StarSelect({ data: options, setMyStar }) {
+export function StarSelect({ data: options, setMyStar, starsToFilter }) {
     const [value, setValue] = useState("");
     const [inputValue, setInputValue] = useState("");
 
@@ -44,7 +44,7 @@ export function StarSelect({ data: options, setMyStar }) {
                     setInputValue(newInputValue);
                 }}
                 id="star-select"
-                options={options}
+                options={options.filter((x) => x != starsToFilter)}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="Star" />}
             />

@@ -1,3 +1,5 @@
-# Backend for our light_curve server
+# backend
 
-to be done in golang
+**`lang`**: `golang`
+
+**`database`**: 

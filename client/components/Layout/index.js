@@ -29,7 +29,7 @@ const Header = () => {
 const Navbar = () => (
     <div>
         <Link href="/">
-            <h1 className="text-4xl font-bold hover:underline hover:cursor-pointer">
+            <h1 className="inline-block text-4xl font-bold hover:underline hover:cursor-pointer">
                 <span className="">L</span>ight
                 <span className="">C</span>urves
             </h1>
