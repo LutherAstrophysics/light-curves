@@ -13,7 +13,6 @@ export default function LightCurve() {
     const [secondStar, setSecondStar] = useState("");
     useEffect(() => {
         const slug = router.query?.slug;
-        console.log("hhere in sueeffect", router)
         if (slug) {
             if (!isNaN(parseInt(slug))) {
                 setFirstStar(parseInt(slug));

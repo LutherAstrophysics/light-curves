@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import {Scatter} from 'react-chartjs-2'
+import {fluxToMagnitude} from 'utils'
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -21,7 +22,6 @@ export const BuildLC = ({ number }) => {
         myDateFormatString(new Date("2003-01-02"))
     );
     const [to, setTo] = useState(myDateFormatString(new Date()));
-    console.log('starnumber', number);
     const [starData, starDataError] = useStarData(number);
     function handleFrom(e) {
         setFrom(e.target.value);
@@ -61,22 +61,44 @@ export const BuildLC = ({ number }) => {
 };
 
 function Curve({ data: rawData }) {
-    console.log("rawdata", rawData);
+    const rawDataWithZerosMasked = rawData.filter(dataPoint => dataPoint.flux !== 0)
     const options = {
         scales: {
             x: {
-                beginsAtZero: false
+                beginsAtZero: false,
+                ticks: {
+                    callback: function(value, index, ticks){
+                        return new Date(value).toLocaleDateString()
+                    }
+                }
             },
             y: {
-                beginsAtZero: false
+                beginsAtZero: false,
+                reverse: true,
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context){
+                        let label = context.dataset.label || '';
+                        if (label){
+                            label += new Date(context.parsed.x).toLocaleDateString() + ": ";
+                        }
+                        if (context.parsed.y !== null){
+                            label += context.parsed.y.toFixed(6);
+                        }
+                        return label;
+                    }
+                }
             }
         }
     }
     const data = {
         datasets: [
             {
-                label: 'lc',
-                data:  rawData.map(point => ({x: new Date(point.date).getTime(), y: point.flux}))
+                label: 'lc: ',
+                data:  rawDataWithZerosMasked.map(point => ({x: new Date(point.date).getTime(), y: fluxToMagnitude(point.flux)}))
             }
         ]
     }
@@ -85,7 +107,7 @@ function Curve({ data: rawData }) {
     return (
         <div>
             <Scatter options={options} data={data} />
-            <p>foo bar {JSON.stringify(rawData, null, 2)}</p>
+            <p className="mt-8 px-4 text-gray-700">Please note that bad nights are yet to be masked!</p>
         </div>
     );
 }
