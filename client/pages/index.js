@@ -1,11 +1,11 @@
 import Layout from "components/Layout";
-import DayToDay from "components/DayToDay";
+import {SelectStar} from "components/LC";
 
 export default function Home() {
     return (
         <Layout>
             <div className="mt-32">
-                <DayToDay />
+                <SelectStar />
             </div>
         </Layout>
     );

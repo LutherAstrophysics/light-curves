@@ -40,6 +40,9 @@ const Navbar = () => (
 const Footer = () => {
     return (
         <div>
+        <Link href="/settings/badnights" >
+        <p className="cursor-pointer text-gray-600 underline"> Bad Nights List</p>
+        </Link>
             <p>Luther Astrophysics &copy; 2022</p>
         </div>
     );

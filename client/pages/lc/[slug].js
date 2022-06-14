@@ -1,60 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Layout from "components/Layout";
-import { useRouter } from "next/router";
-import TextField from "@mui/material/TextField";
-import { BuildLC } from "components/LC";
-import { StarSelect } from "components/DayToDay";
-import { withData } from "hoc";
-import { useStars } from "hooks";
+import { BuildLC, SelectStar } from "components/LC";
+import {fetcher} from "fetch"
 
-export default function LightCurve() {
-    const router = useRouter();
-    const [firstStar, setFirstStar] = useState("");
-    const [secondStar, setSecondStar] = useState("");
-    useEffect(() => {
-        const slug = router.query?.slug;
-        if (slug) {
-            if (!isNaN(parseInt(slug))) {
-                setFirstStar(parseInt(slug));
-            }
-        }
-    }, [router.query]);
+export default function LightCurve({lcData, number}) {
     return (
         <Layout>
-            <p className="text-2xl my-8">Star #{firstStar} </p>
-            <BuildLC number={firstStar} />
-            <SecondStar
-                firstStar={firstStar}
-                star={secondStar}
-                setStar={setSecondStar}
-            />
+        <p className="text-xl px-2 pb-2"># {number}</p>
+        <div className="flex flex-wrap justify-between items-center">
+        <SelectStar starsToFilter={[number]} minimal={true} defaultValue={number}/>
+        </div>
+            <BuildLC number={number} data={lcData} />
         </Layout>
     );
 }
 
-const SecondStar = ({ firstStar, star, setStar }) => {
-    const [allStars, allStarsError] = useStars();
-    return (
-        <div>
-            <p className="text-sm mt-32 mb-6">Compare</p>
-            {React.cloneElement(withData(StarSelect, allStars, allStarsError), {
-                setMyStar: setStar,
-                starsToFilter: [firstStar],
-            })}
-            {!!star && <BuildLC number={star} />}
-            {!!star && (
-                <p className="inline-block text-gray-400 hover:underline cursor-pointer">
-                    Make {star} the main star. (TODO!)
-                </p>
-            )}
-        </div>
-    );
-};
 
 export async function getStaticProps({ params: { slug } }) {
+  const badNightsList = await(fetcher(`/bad_nights?order=date.desc`)).then(data => data.map(night => night.date))
+  const lcData = await(fetcher(`/star_${slug}_4px`)).then(data => data.filter(datapoint => !badNightsList.includes(datapoint.date)))
   return {
     props: {
-        data: ""
+        lcData,
+        number: slug,
     },
   }
 }
