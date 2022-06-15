@@ -1,10 +1,11 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import { useState, useEffect } from "react";
-import { myDateFormatString } from "utils";
+import { myDateFormatString, minDateForChartZoom, millisecondsInAYear } from "utils";
 import { withData } from "hoc";
 import {useStarData} from "hooks"
 import {useRouter} from "next/router"
+import zoomPlugin from 'chartjs-plugin-zoom';
 import {
   Chart as ChartJS,
   LinearScale,
@@ -15,8 +16,8 @@ import {
 } from 'chart.js';
 import {Scatter} from 'react-chartjs-2'
 import {fluxToMagnitude, isDateBetween} from 'utils'
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, zoomPlugin);
 
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 export const BuildLC = ({ number, data }) => {
     const [from, setFrom] = useState(
@@ -63,13 +64,17 @@ export const BuildLC = ({ number, data }) => {
                     }}
                 />
             </div>
-            <Curve data={starData} />
+            <Curve data={starData} starNumber={number}/>
         </div>
     );
 };
 
-function Curve({ data: rawData }) {
+function Curve({ data: rawData, starNumber }) {
     const rawDataWithZerosMasked = rawData.filter(dataPoint => dataPoint.flux !== 0)
+    const dates = rawData.map(x => new Date(x.date).getTime())
+    const xMin = minDateForChartZoom()
+    const xMax = Math.max(...dates) + millisecondsInAYear() 
+    console.log("xmin, xmax", xMin, xMax)
     const options = {
         scales: {
             x: {
@@ -77,12 +82,17 @@ function Curve({ data: rawData }) {
                 ticks: {
                     callback: function(value, index, ticks){
                         return new Date(value).toLocaleDateString()
-                    }
-                }
+                    },
+                },
             },
             y: {
                 beginsAtZero: false,
                 reverse: true,
+                title: {
+                    text: "Magnitude",
+                    color: "#222",
+                    display: true,
+                }
             }
         },
         plugins: {
@@ -91,7 +101,7 @@ function Curve({ data: rawData }) {
                     label: function(context){
                         let label = context.dataset.label || '';
                         if (label){
-                            label += new Date(context.parsed.x).toLocaleDateString() + ": ";
+                            label = new Date(context.parsed.x).toLocaleDateString() + "  ";
                         }
                         if (context.parsed.y !== null){
                             label += context.parsed.y.toFixed(6);
@@ -99,13 +109,36 @@ function Curve({ data: rawData }) {
                         return label;
                     }
                 }
-            }
+            },
+            zoom: {
+                pan: {
+                    enabled: true
+                },
+              limits: {
+                    x: {min: xMin, max: xMax}
+                },
+                zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x',
         }
+            },
+        },
+        elements: {
+            point: {
+                borderColor: 'black',
+                backgroundColor: '#ddd',
+            }
+        },
     }
     const data = {
         datasets: [
             {
-                label: 'lc: ',
+                label: `#${starNumber}`,
                 data:  rawDataWithZerosMasked.map(point => ({x: new Date(point.date).getTime(), y: fluxToMagnitude(point.flux)}))
             }
         ]
