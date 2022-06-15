@@ -8,6 +8,7 @@ import { useStars } from "hooks";
 export function SelectStar({starsToFilter, minimal, defaultValue = ""}) {
     const [allStars, allStarsError] = useStars();
     const [myStar, setMyStar] = React.useState(defaultValue);
+    console.log("default value is", defaultValue)
     const router = useRouter();
     useEffect(() => {
         if (myStar) router.push(`/lc/${myStar}`);
@@ -21,6 +22,7 @@ export function SelectStar({starsToFilter, minimal, defaultValue = ""}) {
                 {React.cloneElement(
                     withData(StarSelectField, allStars, allStarsError),
                     {
+                        initialValue: myStar,
                         setMyStar: setMyStar,
                         starsToFilter: starsToFilter,
                         defaultValue: defaultValue,
@@ -31,8 +33,8 @@ export function SelectStar({starsToFilter, minimal, defaultValue = ""}) {
     );
 }
 
-function StarSelectField({ data: options, setMyStar, starsToFilter }) {
-    const [value, setValue] = useState("");
+function StarSelectField({ data: options, initialValue, setMyStar, starsToFilter }) {
+    const [value, setValue] = useState(initialValue);
     const [inputValue, setInputValue] = useState("");
     return (
         <div className="">
