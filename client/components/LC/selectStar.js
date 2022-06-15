@@ -8,7 +8,6 @@ import { useStars } from "hooks";
 export function SelectStar({starsToFilter, minimal, defaultValue = ""}) {
     const [allStars, allStarsError] = useStars();
     const [myStar, setMyStar] = React.useState(defaultValue);
-    console.log("default value is", defaultValue)
     const router = useRouter();
     useEffect(() => {
         if (myStar) router.push(`/lc/${myStar}`);

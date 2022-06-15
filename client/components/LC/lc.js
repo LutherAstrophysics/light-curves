@@ -74,7 +74,6 @@ function Curve({ data: rawData, starNumber }) {
     const dates = rawData.map(x => new Date(x.date).getTime())
     const xMin = minDateForChartZoom()
     const xMax = Math.max(...dates) + millisecondsInAYear() 
-    console.log("xmin, xmax", xMin, xMax)
     const options = {
         scales: {
             x: {
