@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Layout from "components/Layout";
-import { SelectStar } from "components/LC";
+import { SelectStar, BuildLC } from "components/LC";
 import {fetcher} from "fetch"
 import dynamic from 'next/dynamic'
 
-const DynamicLCBuilder = dynamic(() => import('components/LC/lc.js').then((mod) => mod.BuildLC))
 
 
 export default function LightCurve({lcData, number}) {
-    const [browser, setBrowser] = useState(false)
-    useEffect(() => {
-        setBrowser(true)
-    }, [])
     return (
         <Layout>
         <p className="text-xl px-2 pb-2"># {number}</p>
         <div className="flex flex-wrap justify-between items-center">
         <SelectStar starsToFilter={[number]} minimal={true} defaultValue={number}/>
         </div>
-        {browser ?  <DynamicLCBuilder data={lcData} number={number}/>: null }
+        <BuildLC data={lcData} number={number}/>
         </Layout>
     );
 }
