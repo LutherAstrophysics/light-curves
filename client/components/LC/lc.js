@@ -5,7 +5,6 @@ import { myDateFormatString, minDateForChartZoom, millisecondsInAYear } from "ut
 import { withData } from "hoc";
 import {useStarData} from "hooks"
 import {useRouter} from "next/router"
-import zoomPlugin from 'chartjs-plugin-zoom';
 import {
   Chart as ChartJS,
   LinearScale,
@@ -16,10 +15,17 @@ import {
 } from 'chart.js';
 import {Scatter} from 'react-chartjs-2'
 import {fluxToMagnitude, isDateBetween} from 'utils'
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, zoomPlugin);
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 
 export const BuildLC = ({ number, data }) => {
+    useEffect(() => {
+        async function registerZoom(){
+            const zoomPlugin = (await import('chartjs-plugin-zoom')).default
+            ChartJS.register(zoomPlugin)
+        }
+        registerZoom()
+    }, [])
     const [from, setFrom] = useState(
         myDateFormatString(new Date("2003-01-02"))
     );
