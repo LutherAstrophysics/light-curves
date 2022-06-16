@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import { myDateFormat } from "utils";
 
 export default function Layout({ children }) {
     return (
@@ -40,9 +41,13 @@ const Navbar = () => (
 const Footer = () => {
     return (
         <div>
-        <Link href="/settings/badnights" >
-        <p className="cursor-pointer text-gray-600 underline"> Bad Nights List</p>
-        </Link>
+            <Link href="/settings/badnights">
+                <p className="cursor-pointer text-gray-600 underline">
+                    {" "}
+                    Bad Nights List
+                </p>
+            </Link>
+            <p className="text-gray-600">Date format: {myDateFormat}</p>
             <p>Luther Astrophysics &copy; 2022</p>
         </div>
     );

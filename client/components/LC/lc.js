@@ -1,10 +1,11 @@
-import React from "react";
 import TextField from "@mui/material/TextField";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     myDateFormatString,
     minDateForChartZoom,
     millisecondsInAYear,
+    isBeforeDateString,
+    isSameDateOrAfterDateString,
 } from "utils";
 import { withData } from "hoc";
 import { useStarData } from "hooks";
@@ -16,10 +17,18 @@ import {
     LineElement,
     Tooltip,
     Legend,
+    Title,
 } from "chart.js";
 import { Scatter } from "react-chartjs-2";
 import { fluxToMagnitude, isDateBetween } from "utils";
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+    LinearScale,
+    PointElement,
+    LineElement,
+    Tooltip,
+    Legend,
+    Title
+);
 
 export const BuildLC = ({ number, data }) => {
     useEffect(() => {
@@ -55,7 +64,7 @@ function Curve({ data: rawData, starNumber }) {
                 beginsAtZero: false,
                 ticks: {
                     callback: function (value, index, ticks) {
-                        return new Date(value).toLocaleDateString();
+                        return myDateFormatString(new Date(value));
                     },
                 },
             },
@@ -70,15 +79,19 @@ function Curve({ data: rawData, starNumber }) {
             },
         },
         plugins: {
+            title: {
+                text: `Star ${starNumber}`,
+                display: true,
+                position: "bottom",
+            },
             tooltip: {
                 callbacks: {
                     label: function (context) {
                         let label = context.dataset.label || "";
                         if (label) {
                             label =
-                                new Date(
-                                    context.parsed.x
-                                ).toLocaleDateString() + "  ";
+                                myDateFormatString(new Date(context.parsed.x)) +
+                                "  ";
                         }
                         if (context.parsed.y !== null) {
                             label += context.parsed.y.toFixed(6);
@@ -109,7 +122,6 @@ function Curve({ data: rawData, starNumber }) {
         },
         elements: {
             point: {
-                borderColor: "black",
                 backgroundColor: "#ddd",
             },
         },
@@ -117,18 +129,60 @@ function Curve({ data: rawData, starNumber }) {
     const data = {
         datasets: [
             {
-                label: `#${starNumber}`,
-                data: rawDataWithZerosMasked.map((point) => ({
-                    x: new Date(point.date).getTime(),
-                    y: fluxToMagnitude(point.flux),
-                })),
+                label: `< 2012-01-01`,
+                backgroundColor: "#33a3ff",
+                data: rawDataWithZerosMasked
+                    .filter((dataPoint) =>
+                        isBeforeDateString(dataPoint.date, "2012-01-01")
+                    )
+                    .map((point) => ({
+                        x: new Date(point.date).getTime(),
+                        y: fluxToMagnitude(point.flux),
+                    })),
+            },
+            {
+                backgroundColor: "#bf0a49",
+                label: `>2012-01-01`,
+                data: rawDataWithZerosMasked
+                    .filter((dataPoint) =>
+                        isSameDateOrAfterDateString(
+                            dataPoint.date,
+                            "2012-01-01"
+                        )
+                    )
+                    .map((point) => ({
+                        x: new Date(point.date).getTime(),
+                        y: fluxToMagnitude(point.flux),
+                    })),
             },
         ],
     };
 
+    const chartRef = useRef(null);
+
     return (
         <div className="mt-8">
-            <Scatter options={options} data={data} />
+            <div className="flex justify-end">
+                <button
+                    className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                    onClick={() => chartRef.current.zoom(1.3)}
+                >
+                    +
+                </button>
+                <button
+                    className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                    onClick={() => chartRef.current.zoom(0.7)}
+                >
+                    -
+                </button>
+                <button
+                    className="bg-black px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8"
+                    onClick={() => chartRef.current.resetZoom()}
+                >
+                    Reset
+                </button>
+            </div>
+            <Scatter ref={chartRef} options={options} data={data} />
         </div>
     );
 }
