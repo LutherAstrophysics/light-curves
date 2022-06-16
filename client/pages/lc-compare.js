@@ -109,6 +109,7 @@ function BuildLC({ stars }) {
                         let label = context.dataset.label || "";
                         if (label) {
                             label +=
+                                "  " +
                                 myDateFormatString(new Date(context.parsed.x)) +
                                 "  ";
                         }
