@@ -28,13 +28,24 @@ const Header = () => {
 };
 
 const Navbar = () => (
-    <div>
-        <Link href="/">
-            <h1 className="inline-block text-4xl font-bold hover:underline hover:cursor-pointer">
-                <span className="">L</span>ight
-                <span className="">C</span>urves
-            </h1>
-        </Link>
+    <div className="flex justify-between">
+        <div>
+            <Link href="/">
+                <h1 className="inline-block text-4xl font-bold hover:underline hover:cursor-pointer">
+                    <span className="">L</span>ight
+                    <span className="">C</span>urves
+                </h1>
+            </Link>
+        </div>
+        <div className="gap-4">
+            <div>
+                <Link href="/lc-compare">
+                    <p className="hover:border-b-2 hover:border-blue-600 cursor-pointer font-extrabold text-transparent text-2xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                        LC Comparison
+                    </p>
+                </Link>
+            </div>
+        </div>
     </div>
 );
 
