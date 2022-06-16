@@ -17,10 +17,18 @@ import {
     LineElement,
     Tooltip,
     Legend,
+    Title,
 } from "chart.js";
 import { Scatter } from "react-chartjs-2";
 import { fluxToMagnitude, isDateBetween } from "utils";
-ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+    LinearScale,
+    PointElement,
+    LineElement,
+    Tooltip,
+    Legend,
+    Title
+);
 
 export const BuildLC = ({ number, data }) => {
     useEffect(() => {
@@ -72,13 +80,9 @@ function Curve({ data: rawData, starNumber }) {
         },
         plugins: {
             title: {
-                text: "suman",
+                text: `Star ${starNumber}`,
                 display: true,
-                color: "red",
                 position: "bottom",
-                font: {
-                    size: 24,
-                },
             },
             tooltip: {
                 callbacks: {
