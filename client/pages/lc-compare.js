@@ -99,7 +99,7 @@ function BuildLC({ stars }) {
         },
         plugins: {
             title: {
-                text: `LCs for star ${stars.length > 1 ? "(s):" : ""} ${stars}`,
+                text: `LCs for star${stars.length > 1 ? "s:" : ""} ${stars}`,
                 display: true,
                 position: "bottom",
             },
