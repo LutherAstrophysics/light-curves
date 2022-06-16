@@ -108,7 +108,7 @@ function BuildLC({ stars }) {
                     label: function (context) {
                         let label = context.dataset.label || "";
                         if (label) {
-                            label =
+                            label +=
                                 myDateFormatString(new Date(context.parsed.x)) +
                                 "  ";
                         }
@@ -148,7 +148,7 @@ function BuildLC({ stars }) {
                 ? stars.map((star, index) => {
                       const dataset = starsData[index];
                       return {
-                          label: "Star# " + star.toString(),
+                          label: "# " + star.toString(),
                           backgroundColor: randomColor(),
                           data: dataset.map((point) => ({
                               x: new Date(point.date).getTime(),
