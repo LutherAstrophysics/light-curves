@@ -1,4 +1,4 @@
-import { format, max, min, isAfter, isBefore, isSameDay } from "date-fns";
+import { format, max, min, isAfter, isBefore, isSameDay, differenceInDays } from "date-fns";
 
 export const myDateFormat = "yyyy-MM-dd"
 
@@ -37,4 +37,10 @@ export function constructDate(dateString){
     if (dateString.replace)
         return new Date(dateString.replace(/-/g, '\/'))
     return new Date(dateString)
+}
+
+export function daysSinceBeginning(dateString){
+    const beginningDate = constructDate('2003-06-18')
+    const myDate = constructDate(dateString)
+    return differenceInDays(myDate, beginningDate)
 }

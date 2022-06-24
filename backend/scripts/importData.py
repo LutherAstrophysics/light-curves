@@ -11,7 +11,7 @@ def dataImport(cursor):
     ### spreadsheet id
     spreadsheetId = "1Vv8_6IX_y6Wg6FuHJpgUVYnhiZ4dBOq8535wMoCXYP4"
     yearFrom = 2003
-    yearTo = 2021
+    yearTo = 2003
     size = "4px"
     skips = [2004, 2018] # years to skip
     cursor.execute("SET search_path TO api")

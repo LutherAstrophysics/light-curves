@@ -6,7 +6,10 @@ import {
     millisecondsInAYear,
     isBeforeDateString,
     isSameDateOrAfterDateString,
-    constructDate
+    constructDate,
+    copyLCData,
+    fluxToMagnitude, 
+    isDateBetween 
 } from "utils";
 import { withData } from "hoc";
 import { useStarData } from "hooks";
@@ -21,7 +24,6 @@ import {
     Title,
 } from "chart.js";
 import { Scatter } from "react-chartjs-2";
-import { fluxToMagnitude, isDateBetween } from "utils";
 ChartJS.register(
     LinearScale,
     PointElement,
@@ -163,6 +165,11 @@ function Curve({ data: rawData, starNumber }) {
 
     return (
         <div className="mt-8">
+        <div className="mb-2 flex justify-end">
+        <button className="bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8" onClick={() => copyLCData({data: rawDataWithZerosMasked})} >
+                    Copy to clipboard
+                </button>
+        </div>
             <div className="flex justify-end">
                 <button
                     className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
@@ -183,6 +190,7 @@ function Curve({ data: rawData, starNumber }) {
                     Reset
                 </button>
             </div>
+        
             <Scatter ref={chartRef} options={options} data={data} />
         </div>
     );
