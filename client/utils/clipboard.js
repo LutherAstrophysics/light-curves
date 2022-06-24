@@ -6,11 +6,10 @@ export async function copyLCData({data}){
     const starDataTxt = starData.map(x => x.join('\t')).join('\r\n')
     if (document){
          var input = document.createElement('textarea');
-        input.setAttribute('value', starDataTxt);
+        input.innerHTML = starDataTxt;
         document.body.appendChild(input);
         input.select();
         var result = document.execCommand('copy');
-        document.body.removeChild(input);
-        alert("Data copied to clipboard")
+        alert("Copied")
     }
 }
