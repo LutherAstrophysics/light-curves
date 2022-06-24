@@ -17,4 +17,5 @@ def handleStar(star, size, dateAndFluxRow, dbCursor):
     starTable = f'star_{star}_{size}'
     for date in dateAndFluxRow.index:
         flux = dateAndFluxRow[date]
-        dbCursor.execute(f"INSERT INTO {starTable} (flux, date) VALUES(%s, %s)", (flux, date))
+        dbCursor.execute(f'''INSERT INTO {starTable} (flux, date) VALUES(%s, %s)
+        ON CONFLICT (date) DO UPDATE SET (flux, date) = (EXCLUDED.flux, EXCLUDED.date);''', (flux, date))

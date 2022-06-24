@@ -13,7 +13,7 @@ def dataImport(cursor):
     yearFrom = 2003
     yearTo = 2021
     size = "4px"
-    skips = [2004] # years to skip
+    skips = [2004, 2018] # years to skip
     cursor.execute("SET search_path TO api")
     for year in range(yearFrom, yearTo + 1):
         if year not in skips:
