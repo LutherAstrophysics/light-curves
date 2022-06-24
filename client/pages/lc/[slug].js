@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
 import { fetcher } from "fetch";
+import { useStarData } from "hooks";
 import dynamic from "next/dynamic";
 
 export default function LightCurve({ lcData, number }) {
+    const [data, error] = useStarData(number)
     return (
         <Layout>
             <div className="flex flex-wrap justify-between items-center">
@@ -14,7 +16,7 @@ export default function LightCurve({ lcData, number }) {
                     defaultValue={number}
                 />
             </div>
-            <BuildLC data={lcData} number={number} />
+        <BuildLC data={data || lcData} number={number} /> 
         </Layout>
     );
 }
