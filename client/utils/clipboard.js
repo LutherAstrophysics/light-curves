@@ -7,9 +7,10 @@ export async function copyLCData({data, setCopying}){
     if (document){
          var input = document.createElement('textarea');
         input.innerHTML = starDataTxt;
-        await document.body.appendChild(input);
+        document.body.appendChild(input);
         input.select();
-        var result = await document.execCommand('copy');
+        var result = document.execCommand('copy');
+        input.remove()
         setTimeout(() => setCopying(false), 400)
     }
 }
