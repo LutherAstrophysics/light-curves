@@ -5,8 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { withData } from "hoc";
 import { useStars, useStarsData } from "hooks";
 import Layout from "components/Layout";
-import { fluxToMagnitude, randomColor } from "utils";
-import { myDateFormatString } from "utils";
+import { fluxToMagnitude, randomColor, myDateFormatString, constructDate  } from "utils";
 import {
     Chart as ChartJS,
     LinearScale,
@@ -83,7 +82,7 @@ function BuildLC({ stars }) {
                 beginsAtZero: false,
                 ticks: {
                     callback: function (value, index, ticks) {
-                        return myDateFormatString(new Date(value));
+                        return myDateFormatString(constructDate(value));
                     },
                 },
             },
@@ -110,7 +109,7 @@ function BuildLC({ stars }) {
                         if (label) {
                             label +=
                                 "  " +
-                                myDateFormatString(new Date(context.parsed.x)) +
+                                myDateFormatString(constructDate(context.parsed.x)) +
                                 "  ";
                         }
                         if (context.parsed.y !== null) {
@@ -152,7 +151,7 @@ function BuildLC({ stars }) {
                           label: "# " + star.toString(),
                           backgroundColor: randomColor(),
                           data: dataset.map((point) => ({
-                              x: new Date(point.date).getTime(),
+                              x: constructDate(point.date).getTime(),
                               y: fluxToMagnitude(point.flux),
                           })),
                       };

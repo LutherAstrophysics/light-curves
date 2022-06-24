@@ -32,3 +32,9 @@ export function minDateForChartZoom() {
 export function millisecondsInAYear() {
     return 1000 * 60 * 60 * 24 * 365;
 }
+
+export function constructDate(dateString){
+    if (dateString.replace)
+        return new Date(dateString.replace(/-/g, '\/'))
+    return new Date(dateString)
+}

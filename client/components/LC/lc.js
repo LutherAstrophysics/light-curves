@@ -6,6 +6,7 @@ import {
     millisecondsInAYear,
     isBeforeDateString,
     isSameDateOrAfterDateString,
+    constructDate
 } from "utils";
 import { withData } from "hoc";
 import { useStarData } from "hooks";
@@ -50,7 +51,7 @@ function Curve({ data: rawData, starNumber }) {
     const rawDataWithZerosMasked = rawData.filter(
         (dataPoint) => dataPoint.flux !== 0
     );
-    const dates = rawData.map((x) => new Date(x.date).getTime());
+    const dates = rawData.map((x) => constructDate(x.date).getTime());
     const magnitudes = rawDataWithZerosMasked.map((x) =>
         fluxToMagnitude(x.flux)
     );
@@ -64,7 +65,7 @@ function Curve({ data: rawData, starNumber }) {
                 beginsAtZero: false,
                 ticks: {
                     callback: function (value, index, ticks) {
-                        return myDateFormatString(new Date(value));
+                        return myDateFormatString(constructDate(value));
                     },
                 },
             },
@@ -90,7 +91,7 @@ function Curve({ data: rawData, starNumber }) {
                         let label = context.dataset.label || "";
                         if (label) {
                             label =
-                                myDateFormatString(new Date(context.parsed.x)) +
+                                myDateFormatString(constructDate(context.parsed.x)) +
                                 "  ";
                         }
                         if (context.parsed.y !== null) {
@@ -136,7 +137,7 @@ function Curve({ data: rawData, starNumber }) {
                         isBeforeDateString(dataPoint.date, "2012-01-01")
                     )
                     .map((point) => ({
-                        x: new Date(point.date).getTime(),
+                        x: constructDate(point.date).getTime(),
                         y: fluxToMagnitude(point.flux),
                     })),
             },
@@ -151,7 +152,7 @@ function Curve({ data: rawData, starNumber }) {
                         )
                     )
                     .map((point) => ({
-                        x: new Date(point.date).getTime(),
+                        x: constructDate(point.date).getTime(),
                         y: fluxToMagnitude(point.flux),
                     })),
             },
