@@ -167,7 +167,9 @@ function Curve({ data: rawData, starNumber }) {
     return (
         <div className="mt-8">
         <div className="mb-2 flex justify-end">
-        <button className={`bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8 ${copying ? "disabled": ""}`} onClick={() => copyLCData({data: rawDataWithZerosMasked, setCopying})} >
+        <button className={`bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8 ${copying ? "disabled bg-blue-400": ""}`} onClick={() => {
+                setCopying(true)
+                copyLCData({data: rawDataWithZerosMasked, setCopying})}} >
         {copying ? "...on it" : "Copy to clipboard" }
                 </button>
         </div>

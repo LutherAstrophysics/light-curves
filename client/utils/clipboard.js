@@ -10,6 +10,6 @@ export async function copyLCData({data, setCopying}){
         await document.body.appendChild(input);
         input.select();
         var result = await document.execCommand('copy');
-        setCopying(false)
+        setTimeout(() => setCopying(false), 400)
     }
 }
