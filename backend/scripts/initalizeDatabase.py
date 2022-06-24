@@ -9,7 +9,7 @@ def starsTables(sizes=('4px', )):
     for size in sizes:
         for star in range(1, totalStars + 1):
             allQueries.append(
-                    f"CREATE TABLE star_{star}_{size}(id serial primary key, flux real DEFAULT 0, date date NOT NULL CONSTRAINT no_same_date UNIQUE)"
+                    f"CREATE TABLE star_{star}_{size}(id serial primary key, flux real DEFAULT 0, date date NOT NULL UNIQUE)"
                     )
     return allQueries
 
