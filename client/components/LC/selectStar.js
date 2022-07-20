@@ -32,6 +32,13 @@ export function SelectStar({ starsToFilter, minimal, defaultValue = "" }) {
 
 function StarSelectField({ data: options, value, setMyStar, starsToFilter }) {
     const [inputValue, setInputValue] = useState("");
+    const router = useRouter();
+
+    useEffect(() => {
+        const newStar = parseInt(router.query.slug);
+        if (newStar) setMyStar(newStar.toString());
+    }, [router.query]);
+
     return (
         <div className="">
             <Autocomplete

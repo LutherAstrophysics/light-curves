@@ -37,15 +37,6 @@ const Navbar = () => (
                 </h1>
             </Link>
         </div>
-        <div className="gap-4">
-            <div>
-                <Link href="/lc-compare">
-                    <p className="hover:border-b-2 hover:border-blue-600 cursor-pointer font-extrabold text-transparent text-2xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                        LC Comparison
-                    </p>
-                </Link>
-            </div>
-        </div>
     </div>
 );
 

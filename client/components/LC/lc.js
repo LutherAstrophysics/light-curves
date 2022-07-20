@@ -1,5 +1,10 @@
-import TextField from "@mui/material/TextField";
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+
+// external libs
+import TextField from "@mui/material/TextField";
+
+// lib utils etc
 import {
     myDateFormatString,
     minDateForChartZoom,
@@ -8,12 +13,11 @@ import {
     isSameDateOrAfterDateString,
     constructDate,
     copyLCData,
-    fluxToMagnitude, 
-    isDateBetween 
+    fluxToMagnitude,
+    isDateBetween,
 } from "utils";
 import { withData } from "hoc";
 import { useStarData } from "hooks";
-import { useRouter } from "next/router";
 import {
     Chart as ChartJS,
     LinearScale,
@@ -50,7 +54,7 @@ export const BuildLC = ({ number, data }) => {
 };
 
 function Curve({ data: rawData, starNumber }) {
-    const [copying, setCopying] = useState(false)
+    const [copying, setCopying] = useState(false);
     const rawDataWithZerosMasked = rawData.filter(
         (dataPoint) => dataPoint.flux !== 0
     );
@@ -94,8 +98,9 @@ function Curve({ data: rawData, starNumber }) {
                         let label = context.dataset.label || "";
                         if (label) {
                             label =
-                                myDateFormatString(constructDate(context.parsed.x)) +
-                                "  ";
+                                myDateFormatString(
+                                    constructDate(context.parsed.x)
+                                ) + "  ";
                         }
                         if (context.parsed.y !== null) {
                             label += context.parsed.y.toFixed(6);
@@ -163,37 +168,71 @@ function Curve({ data: rawData, starNumber }) {
     };
 
     const chartRef = useRef(null);
+    const router = useRouter();
 
     return (
         <div className="mt-8">
-        <div className="mb-2 flex justify-end">
-        <button className={`bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8 ${copying ? "disabled bg-blue-400": ""}`} onClick={() => {
-                setCopying(true)
-                copyLCData({data: rawDataWithZerosMasked, setCopying})}} >
-        {copying ? "...on it" : "Copy to clipboard" }
-                </button>
-        </div>
-            <div className="flex justify-end">
+            <div className="mb-2 flex justify-end">
                 <button
-                    className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
-                    onClick={() => chartRef.current.zoom(1.3)}
+                    className={`bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8 ${
+                        copying ? "disabled bg-blue-400" : ""
+                    }`}
+                    onClick={() => {
+                        setCopying(true);
+                        copyLCData({
+                            data: rawDataWithZerosMasked,
+                            setCopying,
+                        });
+                    }}
                 >
-                    +
-                </button>
-                <button
-                    className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
-                    onClick={() => chartRef.current.zoom(0.7)}
-                >
-                    -
-                </button>
-                <button
-                    className="bg-black px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8"
-                    onClick={() => chartRef.current.resetZoom()}
-                >
-                    Reset
+                    {copying ? "...on it" : "Copy to clipboard"}
                 </button>
             </div>
-        
+            <div className="flex justify-between">
+                <div>
+                    {starNumber > 1 && (
+                        <button
+                            className="bg-gray-800 px-4 py-2 text-white rounded inline-block mr-2"
+                            onClick={() => {
+                                router.push(`/lc/${parseInt(starNumber) - 1}`);
+                            }}
+                        >
+                            Prev
+                        </button>
+                    )}
+                    {starNumber < 2510 && (
+                        <button
+                            className="bg-gray-800 px-4 py-2 text-white rounded inline-block mr-2"
+                            onClick={() => {
+                                router.push(`/lc/${parseInt(starNumber) + 1}`);
+                            }}
+                        >
+                            Next
+                        </button>
+                    )}
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                        onClick={() => chartRef.current.zoom(1.3)}
+                    >
+                        +
+                    </button>
+                    <button
+                        className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                        onClick={() => chartRef.current.zoom(0.7)}
+                    >
+                        -
+                    </button>
+                    <button
+                        className="bg-black px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8"
+                        onClick={() => chartRef.current.resetZoom()}
+                    >
+                        Reset
+                    </button>
+                </div>
+            </div>
+
             <Scatter ref={chartRef} options={options} data={data} />
         </div>
     );
