@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Head from 'next/head'
+
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
 import { fetcher } from "fetch";
@@ -6,9 +8,12 @@ import { useStarData } from "hooks";
 import dynamic from "next/dynamic";
 
 export default function LightCurve({ lcData, number }) {
-    const [data, error] = useStarData(number)
+    const [data, error] = useStarData(number);
     return (
         <Layout>
+        <Head>
+            <title> {number} | Star </title>
+        </Head>
             <div className="flex flex-wrap justify-between items-center">
                 <SelectStar
                     starsToFilter={[number]}
@@ -16,8 +21,24 @@ export default function LightCurve({ lcData, number }) {
                     defaultValue={number}
                 />
             </div>
-        <BuildLC data={data || lcData} number={number} /> 
+            <BuildLC data={data || lcData} number={number} />
+            <Comments />
         </Layout>
+    );
+}
+
+function Comments() {
+    return (
+        <section>
+            <script
+                src="https://utteranc.es/client.js"
+                repo="LutherAstrophysics/comments"
+                issue-term="title"
+                theme="github-light"
+                crossorigin="anonymous"
+                async
+            ></script>
+        </section>
     );
 }
 
