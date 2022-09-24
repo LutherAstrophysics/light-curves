@@ -5,7 +5,7 @@ import Script from "next/script";
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
 import { fetcher } from "fetch";
-import { useStarData } from "hooks";
+import { useStarData, useLabels } from "hooks";
 import dynamic from "next/dynamic";
 
 export default function LightCurve({ lcData, number }) {
@@ -22,9 +22,54 @@ export default function LightCurve({ lcData, number }) {
                     defaultValue={number}
                 />
             </div>
+            <Labels starNumber={number} />
             <BuildLC data={data || lcData} number={number} />
             <Comments />
         </Layout>
+    );
+}
+
+function Labels({ starNumber }) {
+    const [data, error] = useLabels(starNumber);
+    if (data)
+        if (data.length)
+            return (
+                <>
+                    {data.map((item) => (
+                        <Label key={item.id} {...item} />
+                    ))}
+                    <a
+                        href={`https://github.com/LutherAstrophysics/stars/issues/${starNumber}`}
+                        className="block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
+                    >
+                        Edit labels
+                    </a>
+                </>
+            );
+        else
+            return (
+                <a
+                    href={`https://github.com/LutherAstrophysics/stars/issues/${starNumber}`}
+                    className="block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
+                >
+                    Add labels
+                </a>
+            );
+    if (error) return <p className="mt-2 text-xs">Error loading labels</p>;
+    return <p className="mt-2 text-xs">Loading labels...</p>;
+}
+
+function Label({ url, name, color, description, ...rest }) {
+    console.log(rest);
+    return (
+        <div
+            className={`inline-block mt-2 mr-4 px-2 py-1 text-xs rounded text-white hover:text-black`}
+            style={{
+                background: `#${color}`,
+            }}
+        >
+            {name}
+        </div>
     );
 }
 
