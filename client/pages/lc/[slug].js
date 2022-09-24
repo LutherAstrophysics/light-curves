@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Head from 'next/head'
+import Head from "next/head";
+import Script from "next/script";
 
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
@@ -11,9 +12,9 @@ export default function LightCurve({ lcData, number }) {
     const [data, error] = useStarData(number);
     return (
         <Layout>
-        <Head>
-            <title> {number} | Star </title>
-        </Head>
+            <Head>
+                <title> {number} | Star </title>
+            </Head>
             <div className="flex flex-wrap justify-between items-center">
                 <SelectStar
                     starsToFilter={[number]}
@@ -29,16 +30,26 @@ export default function LightCurve({ lcData, number }) {
 
 function Comments() {
     return (
-        <section>
-            <script
-                src="https://utteranc.es/client.js"
-                repo="LutherAstrophysics/comments"
-                issue-term="title"
-                theme="github-light"
-                crossorigin="anonymous"
-                async
-            ></script>
-        </section>
+        <section
+            style={{ width: "100%" }}
+            ref={(element) => {
+                if (!element) {
+                    return;
+                }
+
+                const scriptElement = document.createElement("script");
+                scriptElement.setAttribute(
+                    "src",
+                    "https://utteranc.es/client.js"
+                );
+                scriptElement.setAttribute("repo", "LutherAstrophysics/comments");
+                scriptElement.setAttribute("issue-term", "title");
+                scriptElement.setAttribute("theme", "github-light");
+                scriptElement.setAttribute("crossorigin", "anonymous");
+                scriptElement.setAttribute("async", "true");
+                element.replaceChildren(scriptElement);
+            }}
+        />
     );
 }
 
