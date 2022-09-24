@@ -42,7 +42,7 @@ function Comments() {
                     "src",
                     "https://utteranc.es/client.js"
                 );
-                scriptElement.setAttribute("repo", "LutherAstrophysics/comments");
+                scriptElement.setAttribute("repo", "LutherAstrophysics/stars");
                 scriptElement.setAttribute("issue-term", "title");
                 scriptElement.setAttribute("theme", "github-light");
                 scriptElement.setAttribute("crossorigin", "anonymous");
