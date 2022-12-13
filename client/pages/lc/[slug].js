@@ -93,7 +93,7 @@ function Labels({ starNumber }) {
             return (
                 <a
                     href={`https://github.com/LutherAstrophysics/stars/issues/${starNumber}`}
-                    className="inline-block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
+                    className="inline-block text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
                 >
                     Add labels
                 </a>
