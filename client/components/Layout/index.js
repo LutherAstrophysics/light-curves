@@ -31,7 +31,7 @@ const Navbar = () => (
     <div className="flex justify-between">
         <div>
             <Link href="/">
-                <h1 className="inline-block text-4xl font-bold hover:underline hover:cursor-pointer">
+                <h1 className="inline-block text-2xl font-bold hover:underline hover:cursor-pointer">
                     <span className="">L</span>ight
                     <span className="">C</span>urves
                 </h1>
@@ -43,11 +43,28 @@ const Navbar = () => (
 const Footer = () => {
     return (
         <div>
+            <div className="flex gap-x-2 flex-wrap gap-y-2">
+                <p className="text-gray-600 underline hover:text-gray-900">
+                    <a href="https://github.com/LutherAstrophysics/stars/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">
+                        Recently Updated
+                    </a>
+                </p>
+                <p className="text-gray-600 underline hover:text-gray-900">
+                    <a href="https://github.com/LutherAstrophysics/stars/issues?q=is%3Aissue+is%3Aopen+sort%3Acomments-desc">
+                        Most Commented
+                    </a>
+                </p>
+                <p className="text-gray-600 underline hover:text-gray-900">
+                    <a href="https://github.com/LutherAstrophysics/stars/issues?q=is%3Aissue">
+                        All comments
+                    </a>
+                </p>
+            </div>
             <Link href="/settings/badnights">
-                <p className="cursor-pointer text-gray-600 underline">
+                <span className="cursor-pointer text-gray-600 underline hover:text-gray-800">
                     {" "}
                     Bad Nights List
-                </p>
+                </span>
             </Link>
             <p className="text-gray-600">Date format: {myDateFormat}</p>
             <p>Luther Astrophysics &copy; 2022</p>
