@@ -2,7 +2,7 @@
   "name": "client-to",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 10.30.5.4 -p 2300",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start -H 10.30.5.4 -p 2300",
     "serve": "yarn build && yarn start",

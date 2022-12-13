@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Script from "next/script";
 
@@ -7,9 +7,52 @@ import { SelectStar, BuildLC } from "components/LC";
 import { fetcher } from "fetch";
 import { useStarData, useLabels } from "hooks";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 export default function LightCurve({ lcData, number }) {
     const [data, error] = useStarData(number);
+    const router = useRouter();
+    function handlePrevious(goTo) {
+        // Works if there's a previous start
+        if (goTo && !isNaN(goTo) && goTo !== 1) {
+            router.push(`/lc/${goTo}`);
+        }
+    }
+    function handleNext(goTo) {
+        // Works if there's a next start
+        if (goTo && !isNaN(goTo) && goTo !== 2510) {
+            router.push(`/lc/${goTo}`);
+        }
+    }
+    // Add keyboard shortcuts
+
+    const handleKeyPress = useCallback(
+        (event) => {
+            // Make sure keyboard shortcuts aren't getting in the way of typing
+            const currentStarNumber = Number(router?.query?.slug);
+            if (
+                (event.key === "p" || event.key === "P") &&
+                document?.activeElement?.tagName !== "INPUT"
+            )
+                handlePrevious(currentStarNumber - 1);
+            if (
+                (event.key === "n" || event.key === "N") &&
+                document?.activeElement?.tagName !== "INPUT"
+            )
+                handleNext(currentStarNumber + 1);
+        },
+        [router]
+    );
+
+    useEffect(() => {
+        // attach the event listener
+        document.addEventListener("keydown", handleKeyPress);
+
+        // remove the event listener
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [handleKeyPress]);
     return (
         <Layout>
             <Head>
@@ -40,7 +83,7 @@ function Labels({ starNumber }) {
                     ))}
                     <a
                         href={`https://github.com/LutherAstrophysics/stars/issues/${starNumber}`}
-                        className="block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
+                        className="inline-block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
                     >
                         Edit labels
                     </a>
@@ -50,7 +93,7 @@ function Labels({ starNumber }) {
             return (
                 <a
                     href={`https://github.com/LutherAstrophysics/stars/issues/${starNumber}`}
-                    className="block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
+                    className="inline-block mt-2 text-xs hover:text-blue-600 hover:cursor-pointer hover:underline"
                 >
                     Add labels
                 </a>
@@ -60,7 +103,6 @@ function Labels({ starNumber }) {
 }
 
 function Label({ url, name, color, description, ...rest }) {
-    console.log(rest);
     return (
         <div
             className={`inline-block mt-2 mr-4 px-2 py-1 text-xs rounded text-white hover:text-black`}

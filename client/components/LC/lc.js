@@ -168,7 +168,7 @@ function Curve({ data: rawData, starNumber }) {
     const router = useRouter();
 
     return (
-        <div className="mt-8">
+        <div className="mt-0">
             <div className="mb-2 flex justify-end">
                 <button
                     className={`text-sm bg-blue-600 px-4 py-1 text-white rounded inline-block mr-4 lg:mr-8 ${
@@ -194,7 +194,7 @@ function Curve({ data: rawData, starNumber }) {
                                 router.push(`/lc/${parseInt(starNumber) - 1}`);
                             }}
                         >
-                            Prev
+                            (P)rev
                         </button>
                     )}
                     {starNumber < 2510 && (
@@ -204,7 +204,7 @@ function Curve({ data: rawData, starNumber }) {
                                 router.push(`/lc/${parseInt(starNumber) + 1}`);
                             }}
                         >
-                            Next
+                            (N)ext
                         </button>
                     )}
                 </div>
