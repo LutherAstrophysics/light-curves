@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
-// external libs
-import TextField from "@mui/material/TextField";
-
 // lib utils etc
 import {
     myDateFormatString,
@@ -174,7 +171,7 @@ function Curve({ data: rawData, starNumber }) {
         <div className="mt-8">
             <div className="mb-2 flex justify-end">
                 <button
-                    className={`bg-blue-600 px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8 ${
+                    className={`text-sm bg-blue-600 px-4 py-1 text-white rounded inline-block mr-4 lg:mr-8 ${
                         copying ? "disabled bg-blue-400" : ""
                     }`}
                     onClick={() => {
@@ -192,7 +189,7 @@ function Curve({ data: rawData, starNumber }) {
                 <div>
                     {starNumber > 1 && (
                         <button
-                            className="bg-gray-800 px-4 py-2 text-white rounded inline-block mr-2"
+                            className="text-sm bg-gray-800 px-4 py-1 text-white rounded inline-block mr-2"
                             onClick={() => {
                                 router.push(`/lc/${parseInt(starNumber) - 1}`);
                             }}
@@ -202,7 +199,7 @@ function Curve({ data: rawData, starNumber }) {
                     )}
                     {starNumber < 2510 && (
                         <button
-                            className="bg-gray-800 px-4 py-2 text-white rounded inline-block mr-2"
+                            className="text-sm bg-gray-800 px-4 py-1 text-white rounded inline-block mr-2"
                             onClick={() => {
                                 router.push(`/lc/${parseInt(starNumber) + 1}`);
                             }}
@@ -213,19 +210,19 @@ function Curve({ data: rawData, starNumber }) {
                 </div>
                 <div className="flex justify-end">
                     <button
-                        className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                        className="bg-black text-sm px-4 py-1 text-white rounded inline-block mr-2"
                         onClick={() => chartRef.current.zoom(1.3)}
                     >
                         +
                     </button>
                     <button
-                        className="bg-black px-4 py-2 text-white rounded inline-block mr-2"
+                        className="bg-black px-4 text-sm  py-1 text-white rounded inline-block mr-2"
                         onClick={() => chartRef.current.zoom(0.7)}
                     >
                         -
                     </button>
                     <button
-                        className="bg-black px-4 py-2 text-white rounded inline-block mr-4 lg:mr-8"
+                        className="bg-black px-4 text-sm py-1 text-white rounded inline-block mr-4 lg:mr-8"
                         onClick={() => chartRef.current.resetZoom()}
                     >
                         Reset
