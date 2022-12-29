@@ -32,7 +32,10 @@ def main():
             curs.execute(f"DROP TABLE IF EXISTS {TABLE_NAME}")
             curs.execute(f"CREATE TABLE {TABLE_NAME} (star primary key, color real)")
 
-            insert_data_from_spreadsheet(curs)
+            try:
+                insert_data_from_spreadsheet(curs)
+            except Exception as e:
+                print("Error", e)
 
         # Make change to db persistent
         conn.commit()
