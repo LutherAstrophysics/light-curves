@@ -14,7 +14,8 @@ def insert_data_from_spreadsheet(curs):
         star_no, color = row.star, row.color
         if pd.isna(color):
             # No color for the star
-            curs.execute(f"INSERT INTO {TABLE_NAME} (star) VALUES (%s)", (star_no))
+            curs.execute(f"INSERT INTO {TABLE_NAME} (star) VALUES (%s)",
+                    (star_no, ))
         else:
             # If both star_no and color are present
             if star_no and color:
@@ -30,7 +31,7 @@ def main():
             # Business logic to create table inside proper location
             curs.execute("SET search_path TO api")
             curs.execute(f"DROP TABLE IF EXISTS {TABLE_NAME}")
-            curs.execute(f"CREATE TABLE {TABLE_NAME} (star primary key, color real)")
+            curs.execute(f"CREATE TABLE {TABLE_NAME} (star int PRIMARY KEY, color real)")
 
             try:
                 insert_data_from_spreadsheet(curs)
