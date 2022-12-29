@@ -32,6 +32,9 @@ def main():
             curs.execute("SET search_path TO api")
             curs.execute(f"DROP TABLE IF EXISTS {TABLE_NAME}")
             curs.execute(f"CREATE TABLE {TABLE_NAME} (star int PRIMARY KEY, color real)")
+            # Allow read permissions
+            curs.execute(f"GRANT SELECT on all tables in schema api to web_anon")
+            curs.execute(f"GRANT SELECT on all tables in schema api to reader")
 
             try:
                 insert_data_from_spreadsheet(curs)
