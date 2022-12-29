@@ -67,7 +67,7 @@ export default function LightCurve({ lcData, number, color }) {
       <p className="text-sm">
         <span className="text-xs font-semibold">Color:</span> {color}
       </p>
-      <Labels starNumber={number} />
+      {/* <Labels starNumber={number} /> */}
       <BuildLC data={data || lcData} number={number} />
       <Comments />
     </Layout>
