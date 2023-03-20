@@ -1,7 +1,16 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import { MyContext } from "../contexts/myContext";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  const [contextValue, setContextValue] = useState({ primaryData: true });
+  return (
+    <MyContext.Provider
+      value={{ value: contextValue, setValue: setContextValue }}
+    >
+      <Component {...pageProps} />
+    </MyContext.Provider>
+  );
 }
 
-export default MyApp
+export default MyApp;

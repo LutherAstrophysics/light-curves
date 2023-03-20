@@ -1,3 +1,4 @@
+import { useMyContext } from "contexts/myContext";
 import Head from "next/head";
 import Link from "next/link";
 import { myDateFormat } from "utils";
@@ -27,18 +28,48 @@ const Header = () => {
   );
 };
 
-const Navbar = () => (
-  <div className="flex justify-between">
-    <div>
-      <Link href="/">
-        <h1 className="inline-block text-2xl font-bold hover:underline hover:cursor-pointer">
-          <span className="">L</span>ight
-          <span className="">C</span>urves
-        </h1>
-      </Link>
+const Navbar = () => {
+  const { value, setValue } = useMyContext();
+  const isPrimaryData = !!value.primaryData;
+  return (
+    <div className="flex justify-between">
+      <div className="flex gap-x-4">
+        <Link href="/">
+          <h1 className="inline-block text-2xl font-bold hover:underline hover:cursor-pointer">
+            <span className="">L</span>ight
+            <span className="">C</span>urves
+          </h1>
+        </Link>
+        <button
+          onClick={() => {
+            setValue((prev) => ({
+              ...prev,
+              primaryData: true,
+            }));
+          }}
+          className={`px-4 py-2 hover:shadow-md
+          ${isPrimaryData ? "bg-green-600 text-white" : "bg-gray-200"}
+           `}
+        >
+          Primary Data
+        </button>
+        <button
+          onClick={() => {
+            setValue((prev) => ({
+              ...prev,
+              primaryData: false,
+            }));
+          }}
+          className={`px-4 py-2 hover:shadow-lg
+          ${!isPrimaryData ? "bg-green-600 text-white" : "bg-gray-200"}
+        `}
+        >
+          Secondary Data{" "}
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Footer = () => {
   return (
