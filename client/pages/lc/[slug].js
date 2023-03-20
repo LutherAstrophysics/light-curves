@@ -5,7 +5,6 @@ import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
 import { fetcher } from "fetch";
 import { useStarData, useLabels } from "hooks";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 export default function LightCurve({ lcData, number, color }) {
