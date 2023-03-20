@@ -8,22 +8,28 @@ import { useStarData, useLabels } from "hooks";
 import { useRouter } from "next/router";
 
 export default function LightCurve({ lcData, number, color }) {
-  const [data, error] = useStarData(number);
+  const [data] = useStarData(number);
   const router = useRouter();
-  function handlePrevious(goTo) {
-    // Works if there's a previous start
-    if (goTo && !isNaN(goTo) && goTo !== 1) {
-      router.push(`/lc/${goTo}`);
-    }
-  }
-  function handleNext(goTo) {
-    // Works if there's a next start
-    if (goTo && !isNaN(goTo) && goTo !== 2510) {
-      router.push(`/lc/${goTo}`);
-    }
-  }
-  // Add keyboard shortcuts
+  const handlePrevious = useCallback(
+    (goTo) => {
+      // Works if there's a previous start
+      if (goTo && !isNaN(goTo) && goTo !== 1) {
+        router.push(`/lc/${goTo}`);
+      }
+    },
+    [router]
+  );
+  const handleNext = useCallback(
+    (goTo) => {
+      // Works if there's a next start
+      if (goTo && !isNaN(goTo) && goTo !== 2510) {
+        router.push(`/lc/${goTo}`);
+      }
+    },
+    [router]
+  );
 
+  // Add keyboard shortcuts
   const handleKeyPress = useCallback(
     (event) => {
       // Make sure keyboard shortcuts aren't getting in the way of typing
@@ -39,7 +45,7 @@ export default function LightCurve({ lcData, number, color }) {
       )
         handleNext(currentStarNumber + 1);
     },
-    [router]
+    [handleNext, handlePrevious, router?.query?.slug]
   );
 
   useEffect(() => {
