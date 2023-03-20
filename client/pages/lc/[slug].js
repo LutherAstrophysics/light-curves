@@ -1,14 +1,17 @@
 import React, { useEffect, useCallback } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
+import { useMyContext } from "contexts/myContext";
 import { fetcher } from "fetch";
-import { useStarData, useLabels } from "hooks";
-import { useRouter } from "next/router";
+import { useLabels } from "hooks";
 
-export default function LightCurve({ lcData, number, color }) {
-  const [data] = useStarData(number);
+export default function LightCurve({ lcData, lcDataExp, number, color }) {
+  const { value } = useMyContext();
+  const isPrimaryData = !!value.primaryData;
+  const data = isPrimaryData ? lcData : lcDataExp;
   const router = useRouter();
   const handlePrevious = useCallback(
     (goTo) => {
@@ -73,7 +76,7 @@ export default function LightCurve({ lcData, number, color }) {
         <span className="text-xs font-semibold">Color:</span> {color}
       </p>
       {/* <Labels starNumber={number} /> */}
-      <BuildLC data={data || lcData} number={number} />
+      <BuildLC data={data} number={number} />
       {/* <Comments /> */}
     </Layout>
   );
@@ -145,11 +148,17 @@ function Comments() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
+  const badNightsListExp = await fetcher(
+    `/bad_nights_exp?order=date.desc`
+  ).then((data) => data.map((night) => night.date));
   const badNightsList = await fetcher(`/bad_nights?order=date.desc`).then(
     (data) => data.map((night) => night.date)
   );
   const lcData = await fetcher(`/star_${slug}_4px`).then((data) =>
     data.filter((datapoint) => !badNightsList.includes(datapoint.date))
+  );
+  const lcDataExp = await fetcher(`/star_${slug}_4px_exp`).then((data) =>
+    data.filter((datapoint) => !badNightsListExp.includes(datapoint.date))
   );
   const color = await fetcher(`/color?star=eq.${slug}`).then((data) =>
     data && data.length > 0 ? data[0].color : null
@@ -157,6 +166,7 @@ export async function getStaticProps({ params: { slug } }) {
   return {
     props: {
       lcData,
+      lcDataExp,
       number: slug,
       color,
     },

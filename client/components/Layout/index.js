@@ -1,6 +1,8 @@
-import { useMyContext } from "contexts/myContext";
 import Head from "next/head";
 import Link from "next/link";
+
+import { useMyContext } from "contexts/myContext";
+
 import { myDateFormat } from "utils";
 
 export default function Layout({ children }) {
