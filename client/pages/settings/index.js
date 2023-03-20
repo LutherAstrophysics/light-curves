@@ -50,6 +50,18 @@ export default function Index() {
             Source.
           </a>
         </div>
+        <div>
+          <h2 className="text-2xl">How to update ?</h2>
+          <ol className="list-decimal list-inside">
+            <li>Update the data in google sheets linked above.</li>
+            <li>Open terminal app in the server </li>
+            <li>
+              Type <pre className="inline">update-m23-db</pre> and press enter.
+              Follow instructions there.
+            </li>
+            <li>Restart the computer</li>
+          </ol>
+        </div>
       </div>
     </Layout>
   );
