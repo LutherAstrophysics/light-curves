@@ -5,7 +5,7 @@ from typing import Dict
 
 def get_info(is_primary : bool):
     SHEET_NAME = "Data"
-    if primary:
+    if is_primary:
         TABLE_NAME = "bad_nights"
         SPREADSHEET_ID = "12JxtFGkQ5VKZORdVcNtsWhbvh2jhjG5fNGQHv8DUr1g"
     else:
@@ -15,8 +15,6 @@ def get_info(is_primary : bool):
 
 
 def insert_data_from_spreadsheet(curs, info : Dict[str, str]):
-    info = get_info(primary)
-
     SPREADSHEET_ID = info['SPREADSHEET_ID']
     TABLE_NAME = info['TABLE_NAME']
     SHEET_NAME = info['SHEET_NAME']
