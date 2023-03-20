@@ -74,7 +74,7 @@ export default function LightCurve({ lcData, number, color }) {
       </p>
       {/* <Labels starNumber={number} /> */}
       <BuildLC data={data || lcData} number={number} />
-      <Comments />
+      {/* <Comments /> */}
     </Layout>
   );
 }

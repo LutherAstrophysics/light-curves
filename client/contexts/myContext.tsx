@@ -1,3 +1,0 @@
-const defaultContextType = {
-  primaryData: true,
-};
