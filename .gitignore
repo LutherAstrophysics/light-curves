@@ -1,2 +1,3 @@
 backend-mock/
 .venv
+.DS_Store

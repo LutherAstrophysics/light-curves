@@ -13,8 +13,6 @@ import {
   fluxToMagnitude,
   isDateBetween,
 } from "utils";
-import { withData } from "hoc";
-import { useStarData } from "hooks";
 import {
   Chart as ChartJS,
   LinearScale,
