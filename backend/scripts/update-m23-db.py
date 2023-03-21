@@ -20,7 +20,7 @@ def badnights():
     else:
         print('Invalid choice')
 
-def year_import():
+def yearly():
 
     def select_year():
         year = input('\nYear: ')
