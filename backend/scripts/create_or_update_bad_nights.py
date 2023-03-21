@@ -1,5 +1,7 @@
 import pandas as pd
+from pandas.errors import ParserError
 import psycopg
+from urllib.error import URLError
 
 from typing import Dict
 
@@ -21,10 +23,15 @@ def insert_data_from_spreadsheet(curs, info : Dict[str, str]):
 
     # Insert data from spreadsheet
     csv_link = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}"
-    csv_file = pd.read_csv(csv_link, header=0)
-    for index, row in csv_file.iterrows():
-        night_date = row.values[0]
-        curs.execute(f"INSERT INTO {TABLE_NAME} (date) VALUES(%s)", (night_date, ))
+    try:
+        csv_file = pd.read_csv(csv_link, header=0)
+        for index, row in csv_file.iterrows():
+            night_date = row.values[0]
+            curs.execute(f"INSERT INTO {TABLE_NAME} (date) VALUES(%s)", (night_date, ))
+    except URLError:
+        print(f"URL NOT FOUND {csv_link}")
+    except ParserError:
+        print(f"ParserError, probably the sheet isn't shared with anyone with the link")
 
 
 def main(primary=False):
@@ -37,7 +44,7 @@ def main(primary=False):
             # Business logic to create table inside proper location
             curs.execute("SET search_path TO api")
             curs.execute(f"DROP TABLE IF EXISTS {TABLE_NAME}")
-            curs.execute(f"CREATE TABLE {TABLE_NAME} (star int PRIMARY KEY, color real)")
+            curs.execute(f"CREATE TABLE {TABLE_NAME} (id serial PRIMARY KEY, date date NOT NULL)")
             # Allow read permissions
             curs.execute(f"GRANT SELECT on all tables in schema api to web_anon")
             curs.execute(f"GRANT SELECT on all tables in schema api to reader")
