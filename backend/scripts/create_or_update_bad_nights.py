@@ -24,7 +24,7 @@ def insert_data_from_spreadsheet(curs, info : Dict[str, str]):
     # Insert data from spreadsheet
     csv_link = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}"
     try:
-        csv_file = pd.read_csv(csv_link, header=0)
+        csv_file = pd.read_csv(csv_link, header=None)
         for index, row in csv_file.iterrows():
             night_date = row.values[0]
             curs.execute(f"INSERT INTO {TABLE_NAME} (date) VALUES(%s)", (night_date, ))
