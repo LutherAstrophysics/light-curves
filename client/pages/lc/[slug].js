@@ -13,53 +13,54 @@ export default function LightCurve({ lcData, lcDataExp, number, color }) {
   const isPrimaryData = !!value.primaryData;
   const data = isPrimaryData ? lcData : lcDataExp;
   const router = useRouter();
-  const handlePrevious = useCallback(
-    (goTo) => {
-      // Works if there's a previous start
-      if (goTo && !isNaN(goTo) && goTo !== 1) {
-        router.push(`/lc/${goTo}`);
-      }
-    },
-    [router]
-  );
-  const handleNext = useCallback(
-    (goTo) => {
-      // Works if there's a next start
-      if (goTo && !isNaN(goTo) && goTo !== 2510) {
-        router.push(`/lc/${goTo}`);
-      }
-    },
-    [router]
-  );
+  // const handlePrevious = useCallback(
+  //   (goTo) => {
+  //     // Works if there's a previous start
+  //     if (goTo && !isNaN(goTo) && goTo !== 1) {
+  //       router.push(`/lc/${goTo}`);
+  //     }
+  //   },
+  //   [router]
+  // );
+  // const handleNext = useCallback(
+  //   (goTo) => {
+  //     // Works if there's a next start
+  //     if (goTo && !isNaN(goTo) && goTo !== 2510) {
+  //       router.push(`/lc/${goTo}`);
+  //     }
+  //   },
+  //   [router]
+  // );
 
   // Add keyboard shortcuts
-  const handleKeyPress = useCallback(
-    (event) => {
-      // Make sure keyboard shortcuts aren't getting in the way of typing
-      const currentStarNumber = Number(router?.query?.slug);
-      if (
-        (event.key === "p" || event.key === "P") &&
-        document?.activeElement?.tagName !== "INPUT"
-      )
-        handlePrevious(currentStarNumber - 1);
-      if (
-        (event.key === "n" || event.key === "N") &&
-        document?.activeElement?.tagName !== "INPUT"
-      )
-        handleNext(currentStarNumber + 1);
-    },
-    [handleNext, handlePrevious, router?.query?.slug]
-  );
+  // const handleKeyPress = useCallback(
+  //   (event) => {
+  //     // Make sure keyboard shortcuts aren't getting in the way of typing
+  //     const currentStarNumber = Number(router?.query?.slug);
+  //     if (
+  //       (event.key === "p" || event.key === "P") &&
+  //       document?.activeElement?.tagName !== "INPUT"
+  //     )
+  //       handlePrevious(currentStarNumber - 1);
+  //     if (
+  //       (event.key === "n" || event.key === "N") &&
+  //       document?.activeElement?.tagName !== "INPUT"
+  //     )
+  //       handleNext(currentStarNumber + 1);
+  //   },
+  //   [handleNext, handlePrevious, router?.query?.slug]
+  // );
 
-  useEffect(() => {
-    // attach the event listener
-    document.addEventListener("keydown", handleKeyPress);
+  // useEffect(() => {
+  //   // attach the event listener
+  //   document.addEventListener("keydown", handleKeyPress);
 
-    // remove the event listener
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [handleKeyPress]);
+  //   // remove the event listener
+  //   return () => {
+  //     document.removeEventListener("keydown", handleKeyPress);
+  //   };
+  // }, [handleKeyPress]);
+
   return (
     <Layout>
       <Head>
