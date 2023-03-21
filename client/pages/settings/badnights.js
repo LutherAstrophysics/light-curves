@@ -1,13 +1,17 @@
 import Layout from "components/Layout" 
+import { useMyContext } from "contexts/myContext";
 import {fetcher} from "fetch"
 
-export default function BadNights({badNights}){
+export default function BadNights({badNights, badNightsExp}){
+  const { value } = useMyContext();
+  const isPrimaryData = !!value.primaryData;
+    const data = isPrimaryData ? badNights : badNightsExp
     return (
         <Layout>
             <h3 className="text-2xl">Bad Nights List</h3>
             <p>These nights have been masked out when building lightcurves. To create/update bad nights data, make changes in the database.</p>
             <ul className="mt-4">
-                {badNights.map(night => <li className="pt-2" key={night.id}>{night.date}</li>)}
+                {data.map(night => <li className="pt-2" key={night.id}>{night.date}</li>)}
             </ul>
         </Layout>
     )
@@ -16,9 +20,11 @@ export default function BadNights({badNights}){
 
 export async function getStaticProps(){
   const badNightsList = await(fetcher(`/bad_nights?order=date.desc`))
+  const badNightsExp = await(fetcher(`/bad_nights_exp?order=date.desc`))
   return {
     props: {
         badNights: badNightsList,
+        badNightsExp: badNightsExp,
     },
   }
 }
