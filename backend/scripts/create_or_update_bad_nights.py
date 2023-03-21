@@ -45,7 +45,10 @@ def main(primary=False):
             try:
                 insert_data_from_spreadsheet(curs, info)
             except Exception as e:
+                import traceback
+                print(traceback.format_exc())
                 print("Error", e)
+
 
         # Make change to db persistent
         conn.commit()

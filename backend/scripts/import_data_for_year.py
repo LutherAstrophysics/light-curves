@@ -1,10 +1,12 @@
 import pandas as pd
+from pandas.errors import ParserError
 import psycopg
+from urllib.error import URLError
 
 from typing import Dict
 
 def get_spreadsheet_id(is_primary : bool):
-    if primary:
+    if is_primary:
         SPREADSHEET_ID = "1Vv8_6IX_y6Wg6FuHJpgUVYnhiZ4dBOq8535wMoCXYP4"
     else:
         SPREADSHEET_ID = "10EA2VOdk0EbbgxER6rFxY3sth-Oy83ngUTbFBxxtoZA"
@@ -36,7 +38,7 @@ def insert_data_from_spreadsheet(curs, year: int, primary: bool):
         print(f"ParserError, probably the sheet isn't shared with anyone with the link")
 
 
-def handleStar(star, date_and_flux_row, curs, primary):
+def handle_star(star, date_and_flux_row, curs, primary):
     star_table = get_star_table(primary, star)
     for date in date_and_flux_row.index:
         flux = date_and_flux_row[date]
@@ -49,8 +51,11 @@ def main(year: int, primary=False):
     with psycopg.connect("postgres://postgres:mysecretpassword@localhost:5433") as conn:
         with conn.cursor() as curs:
             try:
+                curs.execute("SET search_path TO api")
                 insert_data_from_spreadsheet(curs, year, primary)
             except Exception as e:
+                import traceback
+                print(traceback.format_exc())
                 print("Error", e)
 
         # Make change to db persistent

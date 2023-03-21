@@ -40,7 +40,7 @@ def yearly():
             year_import(year, True)
     elif ps_type == '2':
         if year := select_year():
-            bad_nights_import(year, False)
+            year_import(year, False)
     else:
         print('Invalid choice')
 
