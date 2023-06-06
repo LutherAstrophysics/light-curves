@@ -1,6 +1,8 @@
+import math
 import pandas as pd
-from pandas.errors import ParserError
 import psycopg
+
+from pandas.errors import ParserError
 from urllib.error import URLError
 
 from typing import Dict
@@ -31,7 +33,8 @@ def insert_data_from_spreadsheet(curs, year: int, primary: bool):
     try:
         csv_file = pd.read_csv(csv_link)
         for index, row in csv_file.iterrows():
-            handle_star(int(row[0]), row[1:], curs, primary)
+            star_no = int(row[0].replace(',', '')) # Remove commas
+            handle_star(star_no, row[1:], curs, primary)
     except URLError:
         print(f"URL NOT FOUND {csvLink}")
     except ParserError:
@@ -42,6 +45,12 @@ def handle_star(star, date_and_flux_row, curs, primary):
     star_table = get_star_table(primary, star)
     for date in date_and_flux_row.index:
         flux = date_and_flux_row[date]
+        if isinstance(flux, str):
+            flux = flux.replace(',', '') # Remove commas in dataset
+        elif isinstance(flux, float):
+            # Empty cells in google sheets are read as nan values
+            # Replace nan values with 0's
+            if math.isnan(flux): flux = 0
         curs.execute(f'''INSERT INTO {star_table} (flux, date) VALUES(%s, %s)
         ON CONFLICT (date) DO UPDATE SET (flux, date) = (EXCLUDED.flux, EXCLUDED.date);''', (flux, date))
 
