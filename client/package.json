@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -H 10.30.5.4 -p 2300",
+    "start": "next start -H 0.0.0.0 -p 2300",
     "serve": "yarn build && yarn start",
     "lint": "next lint"
   },
