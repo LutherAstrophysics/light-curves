@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import { useMyContext } from "contexts/myContext";
 
 // lib utils etc
 import {
@@ -11,6 +12,7 @@ import {
   constructDate,
   copyLCData,
   fluxToMagnitude,
+  step2012
 } from "utils";
 import {
   Chart as ChartJS,
@@ -49,9 +51,24 @@ export const BuildLC = ({ number, data }) => {
 
 function Curve({ data: rawData, starNumber }) {
   const [copying, setCopying] = useState(false);
-  const rawDataWithZerosMasked = rawData.filter(
+  const { value } = useMyContext();
+  const isStep2012Applied = !!value.step2012Applied;
+
+  let rawDataWithZerosMasked = rawData.filter(
     (dataPoint) => dataPoint.flux !== 0
   );
+
+  // Apply 2011/12 step
+  if (isStep2012Applied) {
+    rawDataWithZerosMasked = rawDataWithZerosMasked.map((dataPoint) => {
+      if (constructDate(dataPoint.date) < new Date("2012-1-1")) {
+        return { ...dataPoint, flux: step2012[starNumber] * dataPoint.flux };
+      } else {
+        return dataPoint;
+      }
+    });
+  }
+
   const dates = rawData.map((x) => constructDate(x.date).getTime());
   const magnitudes = rawDataWithZerosMasked.map((x) => fluxToMagnitude(x.flux));
   const yMin = Math.min(...magnitudes);
