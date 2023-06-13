@@ -26,6 +26,14 @@ def get_sheet_name(year: int):
     return str(year)
 
 
+def clean_data_for_year(star, primary, year, curs):
+    star_table = get_star_table(primary, star)
+    first_night = f"{year}-01-01"
+    last_night = f"{year + 1}-01-01"
+    curs.execute(f"""DELETE FROM {star_table} where 
+                    date >= '{first_night}'::date AND date < '{last_night}'::date""")
+
+
 def insert_data_from_spreadsheet(curs, year: int, primary: bool):
     spreadsheet_id = get_spreadsheet_id(primary)
     sheet_name = get_sheet_name(year)
@@ -34,6 +42,12 @@ def insert_data_from_spreadsheet(curs, year: int, primary: bool):
         csv_file = pd.read_csv(csv_link)
         for index, row in csv_file.iterrows():
             star_no = int(row[0].replace(',', '')) # Remove commas
+            # Clean data for the year
+            # Note that it's a necessary step to clean records for a year than
+            # just updating them because if accidently we imported data for a
+            # night that shouldn't exist, there would be no way to remove that
+            # datapoint even if we deleted the datapoint in google sheets
+            clean_data_for_year(star_no, primary, year, curs)
             handle_star(star_no, row[1:], curs, primary)
     except URLError:
         print(f"URL NOT FOUND {csvLink}")
@@ -73,3 +87,4 @@ def main(year: int, primary=False):
 
 if __name__ == "__main__":
     main()
+
