@@ -41,7 +41,7 @@ def insert_data_from_spreadsheet(curs, year: int, primary: bool):
     try:
         csv_file = pd.read_csv(csv_link)
         for index, row in csv_file.iterrows():
-            star_no = int(row[0].replace(',', '')) # Remove commas
+            star_no = int(float(str(row[0]).replace(',', ''))) # Remove commas
             # Clean data for the year
             # Note that it's a necessary step to clean records for a year than
             # just updating them because if accidently we imported data for a
