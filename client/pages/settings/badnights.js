@@ -26,5 +26,6 @@ export async function getStaticProps(){
         badNights: badNightsList,
         badNightsExp: badNightsExp,
     },
+    revalidate: 10, // In seconds
   }
 }
