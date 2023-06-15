@@ -38,7 +38,7 @@ export default function Index() {
                             className="text-blue-600 underline"
                             href="https://docs.google.com/spreadsheets/d/105MONNkKpdG18wPZL3lIoWaJ1gR3wJYgDS8HAmr1w8A/edit#gid=0"
                         >
-                            Secondary data source foo
+                            Secondary data source
                         </a>
                     </p>
                 </div>
