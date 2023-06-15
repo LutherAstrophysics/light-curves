@@ -31,13 +31,14 @@ export default function BadNights({ badNights, badNightsExp }) {
     );
 }
 
-export async function getStaticProps() {
-    const badNightsList = await fetcher(`/bad_nights?order=date.desc`);
-    const badNightsExp = await fetcher(`/bad_nights_exp?order=date.desc`);
-    return {
-        props: {
-            badNights: badNightsList,
-            badNightsExp: badNightsExp,
-        },
-    };
+export async function getStaticProps(){
+  const badNightsList = await(fetcher(`/bad_nights?order=date.desc`))
+  const badNightsExp = await(fetcher(`/bad_nights_exp?order=date.desc`))
+  return {
+    props: {
+        badNights: badNightsList,
+        badNightsExp: badNightsExp,
+    },
+    revalidate: 10, // In seconds
+  }
 }

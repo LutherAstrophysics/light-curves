@@ -171,6 +171,7 @@ export async function getStaticProps({ params: { slug } }) {
       number: slug,
       color,
     },
+    revalidate: 30, // In seconds
   };
 }
 
