@@ -61,10 +61,9 @@ export default function Index() {
                             press enter. Follow instructions there.
                         </li>
                         <li>
-                            Type <pre> restart-frontend {"&"} </pre> to rebuild
-                            the frontend page with updated data. This might take
-                            a couple minutes. Note that it is important to not
-                            miss the ampersand sign.
+                            Either restart the computer or type <pre> restart-frontend</pre> to rebuild
+                            the frontend page with updated data. If you choose the latter, you
+                            should not close the process and do other works you may have in a new terminal.
                         </li>
                     </ol>
                 </div>
