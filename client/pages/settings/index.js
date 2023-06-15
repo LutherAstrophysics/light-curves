@@ -60,7 +60,6 @@ export default function Index() {
                             Type <pre className="inline">update-m23-db</pre> and press enter. Follow
                             instructions there.
                         </li>
-                        <li>Restart the computer</li>
                     </ol>
                 </div>
             </div>
