@@ -65,6 +65,7 @@ export default function Index() {
                             the frontend page with updated data. If you choose the latter, you
                             should not close the process and do other works you may have in a new terminal.
                         </li>
+                        <li> Restart the computer </li>
                     </ol>
                 </div>
             </div>
