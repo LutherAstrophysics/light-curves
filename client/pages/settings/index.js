@@ -57,8 +57,13 @@ export default function Index() {
                         <li>Update the data in google sheets linked above.</li>
                         <li>Open terminal app in the server </li>
                         <li>
-                            Type <pre className="inline">update-m23-db</pre> and press enter. Follow
-                            instructions there.
+                            Type <pre className="inline">update-m23-db</pre> and
+                            press enter. Follow instructions there.
+                        </li>
+                        <li>
+                            Either restart the computer or type <pre> restart-frontend</pre> to rebuild
+                            the frontend page with updated data. If you choose the latter, you
+                            should not close the process and do other works you may have in a new terminal.
                         </li>
                     </ol>
                 </div>
