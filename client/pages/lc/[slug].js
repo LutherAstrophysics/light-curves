@@ -101,7 +101,7 @@ export default function LightCurve({
       </p> */}
       {/* <Labels starNumber={number} /> */}
       <BuildLC data={data} number={number} />
-      <Comments />
+      <Comments number={number} />
     </Layout>
   );
 }
@@ -184,25 +184,38 @@ function Label({ url, name, color, description, ...rest }) {
   );
 }
 
-function Comments() {
+function Comments({ number }) {
   return (
-    <section
-      style={{ width: "100%" }}
-      ref={(element) => {
-        if (!element) {
-          return;
-        }
+    <div>
+      <p className="text-xs text-center">
+        If the conversions for this star does not show up properly in this
+        lightcurves website,{" "}
+        <a
+          href={`https://github.com/LutherAstrophysics/stars/issues/${number}`}
+          className="text-blue-600 underline"
+        >
+          follow conversions through its github page here
+        </a>
+        .
+      </p>
+      <section
+        style={{ width: "100%" }}
+        ref={(element) => {
+          if (!element) {
+            return;
+          }
 
-        const scriptElement = document.createElement("script");
-        scriptElement.setAttribute("src", "https://utteranc.es/client.js");
-        scriptElement.setAttribute("repo", "LutherAstrophysics/stars");
-        scriptElement.setAttribute("issue-term", "title");
-        scriptElement.setAttribute("theme", "github-light");
-        scriptElement.setAttribute("crossorigin", "anonymous");
-        scriptElement.setAttribute("async", "true");
-        element.replaceChildren(scriptElement);
-      }}
-    />
+          const scriptElement = document.createElement("script");
+          scriptElement.setAttribute("src", "https://utteranc.es/client.js");
+          scriptElement.setAttribute("repo", "LutherAstrophysics/stars");
+          scriptElement.setAttribute("issue-term", "title");
+          scriptElement.setAttribute("theme", "github-light");
+          scriptElement.setAttribute("crossorigin", "anonymous");
+          scriptElement.setAttribute("async", "true");
+          element.replaceChildren(scriptElement);
+        }}
+      />
+    </div>
   );
 }
 
