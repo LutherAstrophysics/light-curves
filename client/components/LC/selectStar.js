@@ -11,7 +11,8 @@ export function SelectStar({ starsToFilter, minimal, defaultValue = "" }) {
   const router = useRouter();
   useEffect(() => {
     if (myStar) router.push(`/lc/${myStar}`);
-  }, [myStar,]); // Adding router to dependency array creates a great lag
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myStar]); // Adding router to dependency array creates a great lag
   return (
     <div>
       {!minimal && <h2 className="text-sm mb-6">Choose/Type:</h2>}
@@ -37,7 +38,8 @@ function StarSelectField({ data: options, value, setMyStar, starsToFilter }) {
   useEffect(() => {
     const newStar = parseInt(router.query.slug);
     if (newStar) setMyStar(newStar.toString());
-  }, [router.query,]); // Adding setMyStar to dependency array creates lag
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]); // Adding setMyStar to dependency array creates lag
 
   return (
     <div className="">
@@ -45,6 +47,8 @@ function StarSelectField({ data: options, value, setMyStar, starsToFilter }) {
         value={value}
         onChange={(event, newValue) => {
           setMyStar(newValue);
+          // Remove focus after selection 
+          event.target.blur();
         }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
