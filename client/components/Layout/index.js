@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMyContext } from "contexts/myContext";
 
 import { myDateFormatString, myDateFormat, isBeforeDateString } from "utils";
+import { useEffect } from "react";
 
 export default function Layout({ children }) {
   return (
@@ -34,6 +35,14 @@ const Navbar = () => {
   const { value, setValue } = useMyContext();
   const isStep2012Applied = !!value.step2012Applied;
   const isPrimaryData = !!value.primaryData;
+  const zoom = !!value.zoom;
+  useEffect(() => {
+    if (zoom) {
+      document.body.style.zoom = "100%";
+    } else {
+      document.body.style.zoom = "80%";
+    }
+  }, [zoom]);
   return (
     <div className="flex justify-between">
       <div className="flex gap-x-4">
@@ -74,6 +83,25 @@ const Navbar = () => {
           >
             Secondary Data{" "}
           </button>
+        </div>
+        <div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={value?.zoom}
+              className="sr-only peer"
+              onChange={(e) =>
+                setValue((prev) => ({
+                  ...prev,
+                  zoom: !value?.zoom,
+                }))
+              }
+            />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <span className="ml-3 text-xs font-medium text-gray-900 dark:text-gray-300">
+              Zoom
+            </span>
+          </label>
         </div>
       </div>
       <div>
