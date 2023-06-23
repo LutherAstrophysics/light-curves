@@ -2,13 +2,21 @@ import React, { useEffect, useCallback } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import Link from "next/link";
 import Layout from "components/Layout";
 import { SelectStar, BuildLC } from "components/LC";
 import { useMyContext } from "contexts/myContext";
 import { fetcher } from "fetch";
 import { useLabels } from "hooks";
+import { starsInfo } from "utils/info";
 
-export default function LightCurve({ lcData, lcDataExp, number, color }) {
+export default function LightCurve({
+  lcData,
+  lcDataExp,
+  number,
+  color,
+  starData,
+}) {
   const { value } = useMyContext();
   const isPrimaryData = !!value.primaryData;
   const data = isPrimaryData ? lcData : lcDataExp;
@@ -73,13 +81,49 @@ export default function LightCurve({ lcData, lcDataExp, number, color }) {
           defaultValue={number}
         />
       </div>
-      <p className="text-sm">
-        <span className="text-xs font-semibold">Color:</span> {color}
-      </p>
+      <StarsInfo data={starData} />
+      {/* <p className="text-sm">
+        <span className="text-xs font-semibold">R-I:</span> {color}
+      </p> */}
       {/* <Labels starNumber={number} /> */}
       <BuildLC data={data} number={number} />
-      {/* <Comments /> */}
+      <Comments />
     </Layout>
+  );
+}
+
+function StarsInfo({ data }) {
+  return (
+    <div className="">
+      <div className="flex gap-x-4">
+        <p>
+          <span className="font-semibold">X:</span> {data?.x}
+        </p>
+        <p>
+          <span className="font-semibold">Y:</span> {data?.y}
+        </p>
+        <p>
+          <span className="font-semibold">R-I:</span> {data?.color}
+        </p>
+      </div>
+      <div>
+        <p>
+          <span>Neighbors (within 20px):</span>
+        </p>
+        <ol className="list-decimal list-inside flex gap-x-4 px-2">
+          {data?.neighbors?.map((neighborInfo) => (
+            <li key={neighborInfo[0]}>
+              <span className="font-semibold hover:text-blue-700 hover:underline">
+                <Link href={`/lc/${neighborInfo[0]}`}>
+                  {JSON.stringify(neighborInfo[0])}
+                </Link>{" "}
+              </span>
+              at {neighborInfo[1].toFixed(2)}px{" "}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
   );
 }
 
@@ -164,12 +208,14 @@ export async function getStaticProps({ params: { slug } }) {
   const color = await fetcher(`/color?star=eq.${slug}`).then((data) =>
     data && data.length > 0 ? data[0].color : null
   );
+  const starData = starsInfo[slug] || null;
   return {
     props: {
       lcData,
       lcDataExp,
       number: slug,
       color,
+      starData,
     },
     revalidate: 30, // In seconds
   };
