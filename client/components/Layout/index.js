@@ -37,12 +37,14 @@ const Navbar = () => {
   return (
     <div className="flex justify-between">
       <div className="flex gap-x-4">
-        <Link href="/">
-          <h1 className="inline-block text-2xl font-bold hover:underline hover:cursor-pointer">
-            <span className="">L</span>ight
-            <span className="">C</span>urves
-          </h1>
-        </Link>
+        <div>
+          <Link href="/">
+            <h1 className="inline-block text-2xl font-bold hover:underline hover:cursor-pointer">
+              <span className="">L</span>ight
+              <span className="">C</span>urves
+            </h1>
+          </Link>
+        </div>
         <div>
           <button
             onClick={() => {
