@@ -26,6 +26,14 @@ export function isBeforeDateString(dateA, dateB) {
   // returns if dateA is before dateB
   return isBefore(new Date(dateA), new Date(dateB));
 }
+
+export function isBeforeOrEqualToDateString(dateA, dateB) {
+  // returns if dateA is before or equal to dateB
+  return (
+    isBefore(new Date(dateA), new Date(dateB)) ||
+    isSameDay(new Date(dateA), new Date(dateB))
+  );
+}
 export function isDateBetween(dateString, dateA, dateB) {
   const myDate = new Date(dateString);
   const maxDate = max([new Date(dateA), new Date(dateB)]);

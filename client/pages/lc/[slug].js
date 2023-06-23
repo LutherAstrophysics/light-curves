@@ -9,6 +9,10 @@ import { useMyContext } from "contexts/myContext";
 import { fetcher } from "fetch";
 import { useLabels } from "hooks";
 import { starsInfo } from "utils/info";
+import {
+  isSameDateOrAfterDateString,
+  isBeforeOrEqualToDateString,
+} from "utils";
 
 export default function LightCurve({
   lcData,
@@ -19,7 +23,17 @@ export default function LightCurve({
 }) {
   const { value } = useMyContext();
   const isPrimaryData = !!value.primaryData;
-  const data = isPrimaryData ? lcData : lcDataExp;
+  let data = isPrimaryData ? lcData : lcDataExp;
+  if (value?.minDate) {
+    data = data.filter((x) =>
+      isSameDateOrAfterDateString(x.date, value?.minDate)
+    );
+  }
+  if (value?.maxDate) {
+    data = data.filter((x) =>
+      isBeforeOrEqualToDateString(x.date, value?.maxDate)
+    );
+  }
   const router = useRouter();
   const handlePrevious = useCallback(
     (goTo) => {
@@ -94,7 +108,7 @@ export default function LightCurve({
 
 function StarsInfo({ data }) {
   return (
-    <div className="">
+    <div className="text-xs mt-2">
       <div className="flex gap-x-4">
         <p>
           <span className="font-semibold">X:</span> {data?.x}
@@ -108,9 +122,9 @@ function StarsInfo({ data }) {
       </div>
       <div>
         <p>
-          <span>Neighbors (within 20px):</span>
+          <span>{data?.neighbors?.length} neighbors (within 20px):</span>
         </p>
-        <ol className="list-decimal list-inside flex gap-x-4 px-2">
+        <ol className="list-decimal list-inside flex gap-x-4">
           {data?.neighbors?.map((neighborInfo) => (
             <li key={neighborInfo[0]}>
               <span className="font-semibold hover:text-blue-700 hover:underline">
