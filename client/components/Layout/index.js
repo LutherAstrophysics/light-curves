@@ -38,13 +38,19 @@ const Navbar = () => {
   const zoom = !!value.zoom;
   useEffect(() => {
     if (zoom) {
-      document.body.style.zoom = "100%";
+      if (document.getElementById("starChartSection")) {
+        document.getElementById("starChartSection").style.zoom = "100%";
+      }
+      document.getElementById("navbar").style.zoom = "100%";
     } else {
-      document.body.style.zoom = "80%";
+      if (document.getElementById("starChartSection")) {
+        document.getElementById("starChartSection").style.zoom = "80%";
+      }
+      document.getElementById("navbar").style.zoom = "80%";
     }
   }, [zoom]);
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between" id="navbar">
       <div className="flex gap-x-4">
         <div>
           <Link href="/">

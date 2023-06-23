@@ -88,14 +88,16 @@ export default function LightCurve({
       <Head>
         <title> {number} | Star </title>
       </Head>
-      <div className="flex flex-wrap justify-between items-center">
-        <SelectStar
-          starsToFilter={[number]}
-          minimal={true}
-          defaultValue={number}
-        />
-      </div>
-      <StarsInfo data={starData} />
+      <main id="starChartSection">
+        <div className="flex flex-wrap justify-between items-center">
+          <SelectStar
+            starsToFilter={[number]}
+            minimal={true}
+            defaultValue={number}
+          />
+        </div>
+        <StarsInfo data={starData} />
+      </main>
       {/* <p className="text-sm">
         <span className="text-xs font-semibold">R-I:</span> {color}
       </p> */}
