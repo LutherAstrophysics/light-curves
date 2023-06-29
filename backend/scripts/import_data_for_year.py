@@ -65,8 +65,9 @@ def handle_star(star, date_and_flux_row, curs, primary):
             # Empty cells in google sheets are read as nan values
             # Replace nan values with 0's
             if math.isnan(flux): flux = 0
-        curs.execute(f'''INSERT INTO {star_table} (flux, date) VALUES(%s, %s)
-        ON CONFLICT (date) DO UPDATE SET (flux, date) = (EXCLUDED.flux, EXCLUDED.date);''', (flux, date))
+        if not date.startswith('Unnamed'):
+            curs.execute(f'''INSERT INTO {star_table} (flux, date) VALUES(%s, %s)
+            ON CONFLICT (date) DO UPDATE SET (flux, date) = (EXCLUDED.flux, EXCLUDED.date);''', (flux, date))
 
 
 def main(year: int, primary=False):
