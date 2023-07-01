@@ -38,7 +38,7 @@ export default function LightCurve({
   const handlePrevious = useCallback(
     (goTo) => {
       // Works if there's a previous start
-      if (goTo && !isNaN(goTo) && goTo !== 1) {
+      if (goTo && !isNaN(goTo) && goTo > 0) {
         router.push(`/lc/${goTo}`);
       }
     },
@@ -47,7 +47,7 @@ export default function LightCurve({
   const handleNext = useCallback(
     (goTo) => {
       // Works if there's a next start
-      if (goTo && !isNaN(goTo) && goTo !== 2510) {
+      if (goTo && !isNaN(goTo) && goTo < 2511) {
         router.push(`/lc/${goTo}`);
       }
     },
