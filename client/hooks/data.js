@@ -3,7 +3,7 @@ import useSWR, { mutate } from "swr";
 import { fetcher } from "fetch";
 
 export function useStars() {
-    const allStars = Array(2510)
+    const allStars = Array(3745)
         .fill(undefined)
         .map((_, i) => (i + 1).toString());
     const [data, setData] = useState(allStars);

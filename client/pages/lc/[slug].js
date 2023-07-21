@@ -47,7 +47,7 @@ export default function LightCurve({
   const handleNext = useCallback(
     (goTo) => {
       // Works if there's a next start
-      if (goTo && !isNaN(goTo) && goTo < 2511) {
+      if (goTo && !isNaN(goTo) && goTo < 3746) {
         router.push(`/lc/${goTo}`);
       }
     },
@@ -251,7 +251,7 @@ export async function getStaticProps({ params: { slug } }) {
 }
 
 export async function getStaticPaths() {
-  const allStars = Array(2510)
+  const allStars = Array(3745)
     .fill(undefined)
     .map((_, i) => ({ slug: (i + 1).toString() }));
   return {

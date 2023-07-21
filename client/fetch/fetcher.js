@@ -2,7 +2,9 @@ export function fetcher(key, ...rest) {
   const hostname = getHostName();
   const fetchUrl = `${hostname}${key}`;
 
-  return fetch(fetchUrl, ...rest).then((res) => res.json());
+  return fetch(fetchUrl, ...rest).then((res) =>
+    res.status == 200 ? res.json() : []
+  );
 }
 
 export function fetcherPost(key, postBody) {
