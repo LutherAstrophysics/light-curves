@@ -28,7 +28,8 @@ def databaseSetup(curs):
             ###   to web_anon
             "alter default privileges in schema api grant select on tables to web_anon",
             "alter default privileges in schema api grant select on sequences to web_anon",
-            "grant web_anon to authenticator"
+            "grant web_anon to authenticator",
+            "grant select on all tables in schema api to reader"
         ]
 
     success = False
