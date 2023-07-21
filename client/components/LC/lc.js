@@ -12,7 +12,7 @@ import {
   constructDate,
   copyLCData,
   fluxToMagnitude,
-  step2012
+  step2012,
 } from "utils";
 import {
   Chart as ChartJS,
@@ -214,6 +214,14 @@ function Curve({ data: rawData, starNumber }) {
               (N)ext
             </button>
           )}
+          <a
+            className="text-blue-800 text-sm hover:underline"
+            href="https://docs.google.com/spreadsheets/d/1B9qbPuJvkGEWebKzyvftj2km8dd5Z18FGxCJnTvJEbM/edit#gid=0"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LTPR data
+          </a>
         </div>
         <div className="flex justify-end">
           <button
