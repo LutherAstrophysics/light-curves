@@ -58,11 +58,16 @@ function Curve({ data: rawData, starNumber }) {
     (dataPoint) => dataPoint.flux !== 0
   );
 
+  const isPrimaryData = !!value.primaryData;
+
   // Apply 2011/12 step
   if (isStep2012Applied) {
     rawDataWithZerosMasked = rawDataWithZerosMasked.map((dataPoint) => {
       if (constructDate(dataPoint.date) < new Date("2012-1-1")) {
-        return { ...dataPoint, flux: step2012[starNumber] * dataPoint.flux };
+        return {
+          ...dataPoint,
+          flux: (step2012[starNumber] || 1) * dataPoint.flux,
+        }; // Use 1 if no step info is available
       } else {
         return dataPoint;
       }
@@ -204,7 +209,7 @@ function Curve({ data: rawData, starNumber }) {
               (P)rev
             </button>
           )}
-          {starNumber < 2510 && (
+          {starNumber < 3745 && (
             <button
               className="text-sm bg-gray-800 px-4 py-1 text-white rounded inline-block mr-2"
               onClick={() => {
@@ -214,14 +219,25 @@ function Curve({ data: rawData, starNumber }) {
               (N)ext
             </button>
           )}
-          <a
-            className="text-blue-800 text-sm hover:underline"
-            href="https://docs.google.com/spreadsheets/d/1B9qbPuJvkGEWebKzyvftj2km8dd5Z18FGxCJnTvJEbM/edit#gid=0"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LTPR data
-          </a>
+          {isPrimaryData ? (
+            <a
+              className="text-blue-800 text-sm hover:underline"
+              href="https://docs.google.com/spreadsheets/d/1PYpvdmzAxq-lcAFVBRg12y6uMxHjuu97BwIeAR3xUNo/edit#gid=0"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LTPR data
+            </a>
+          ) : (
+            <a
+              className="text-blue-800 text-sm hover:underline"
+              href="https://docs.google.com/spreadsheets/d/1B9qbPuJvkGEWebKzyvftj2km8dd5Z18FGxCJnTvJEbM/edit#gid=0"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LTPR data
+            </a>
+          )}
         </div>
         <div className="flex justify-end">
           <button
